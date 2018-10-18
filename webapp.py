@@ -33,11 +33,23 @@ def index():
 
     return render_template("index.html")
 
+def test_db() :
+    from database import Mission
+    from database import Ingenieur_Etudes
+    from database import Affectuation
+    from database import Positionnement
+    mission1 = Mission(title="mission1")
+    mission2 = Mission(title="mission2")
+    ing1 = Ingenieur_Etudes()
+    ing2 = Ingenieur_Etudes()
+    ing3 = Ingenieur_Etudes()
+    mission1.ingenieurs_positionnes.append(ing1)
+    mission1.ingenieurs_positionnes.append(ing2)
+
+
 if __name__ == "__main__":
-    # Create the DB
     from database import db
     print("creating database")
     db.create_all()
     print("database created")
-
     app.run()
