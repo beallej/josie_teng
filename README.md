@@ -23,6 +23,3 @@ affectues
 
 ingenieur_etudes
 * id - INT
-
-
-Test git
