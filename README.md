@@ -5,7 +5,7 @@ mission
 * description - VARCHAR
 * categories - ARRAY OF VARCHAR
 * date_saisie - DATE
-* date_affectue - DATE
+* date_closed - DATE
 * status - VARCHAR
 
 souhaits
@@ -13,8 +13,13 @@ souhaits
 * voeux - VARCHAR
 * mission_id - INTEGER (FK)
 * ingenieur_etudes_id - INTEGER (FK)
-* affectue - BOOL
 * position_date - DATE
 
-ingenieur_Etudes
+affectues
+* id - INT
+* mission_id - INTEGER (FK)
+* ingenieur_etudes_id - INTEGER (FK)
+* date_affectue - DATE
+
+ingenieur_etudes
 * id - INT
