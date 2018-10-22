@@ -15,9 +15,9 @@ db = SQLAlchemy(app)
 Base = declarative_base()
 
 class Status(Enum):
-    A_AFFECTER = "a_affecter"
-    CLOS = "clos"
-    AFFECTE = "affecte"
+    A_AFFECTER = "À Affecter"
+    CLOS = "Clos"
+    AFFECTE = "Affectée"
 
 #
 
@@ -41,6 +41,14 @@ class Mission(db.Model):
     ingenieurs_positionnes = relationship("Positionnement", back_populates="mission")
     ingenieurs_affectue = relationship("Affectuation", uselist=False, back_populates="mission")
 
+
+    def affectuer(self, ingenieur_id):
+        affectuation = Affectuation(mission_id=self.id, ingenieur_etudes_id=ingenieur_id)
+        self.ingenieurs_affectue = affectuation
+        self.status = Status.AFFECTE
+        self.ingenieurs_affectue = affectuation
+
+
     def close(self):
         self.date_closed = datetime.datetime.utcnow()
         self.status = Status.CLOS
@@ -62,15 +70,11 @@ class Ingenieur_Etudes(db.Model):
     missions_positionnes = relationship("Positionnement", back_populates="ingenieur")
     missions_affectues = relationship("Affectuation", back_populates="ingenieur")
 
-    def positionner(self, mission, voeux):
-        positionnement = Positionnement(voeux=voeux, ingenieur_etudes_id=self.id, mission_id=mission.id)
+    def positionner(self, mission_id, voeux):
+        positionnement = Positionnement(voeux=voeux, ingenieur_etudes_id=self.id, mission_id=mission_id)
         self.missions_positionnes.append(positionnement)
 
-    def affectuer(self, mission):
-        affectuation = Affectuation(mission_id=mission.id, ingenieur_etudes_id=self.id)
-        mission.ingenieurs_affectue = affectuation
-        mission.status = Status.AFFECTE
-        self.missions_affectues.append(affectuation)
+
 
 class Action(db.Model):
     __tablename__ = 'action'
