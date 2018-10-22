@@ -73,7 +73,11 @@ def getMissionsAAffecter(categories=None):
     missions_a_affecter_pour_categories = list(filter(lambda mission: mission.status == Status.A_AFFECTER, missions_pour_categories))
     return missions_a_affecter_pour_categories
 
+def get_mission_by_id(id):
+    return Mission.query.filter_by(id=id).first()
 
+def get_ingenieur_by_id(id):
+    return Ingenieur_Etudes.query.filter_by(id=id).first()
 
 ### ACTIONS
 
@@ -89,6 +93,7 @@ def addMission(title, description, categories):
     # map(lambda category: new_mission.categories.append(Category(name=category)), categories)
     db.session.add(new_mission)
     db.session.commit()
+    return new_mission
 
 def cloreMission(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
@@ -97,6 +102,23 @@ def cloreMission(mission_id):
 
 def supprimerMission(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
+    positionnements = Positionnement.query.filter_by(mission_id=mission_id)
+    for positionnement in positionnements:
+        ingenieur = positionnement.ingenieur
+        ingenieur.missions_positionnes.remove(positionnement)
+        db.session.merge(ingenieur)
+
+    affectuation2 = list(Affectuation.query.filter_by(mission_id=mission_id))
+
+    affectuation = Affectuation.query.filter_by(mission_id=mission_id).first()
+    ingenieur = affectuation.ingenieur
+    ingenieur.missions_affectues.remove(affectuation)
+    db.session.merge(ingenieur)
+    for category in mission.categories:
+        category.missions.remove(mission)
+        db.session.merge(category)
+    map(db.session.delete, list(positionnements))
+    db.session.delete(affectuation)
     db.session.delete(mission)
     db.session.commit()
 
@@ -109,7 +131,8 @@ def positionner_pour_mission(mission_id, ingenieur_etudes_id, voeux):
 
 def affectuer_mission(mission_id, ingenieur_etudes_id):
     mission = Mission.query.filter_by(id=mission_id).first()
-    ingenieur_etudes = Mission.query.filter_by(id=ingenieur_etudes_id).first()
-    affectuer(mission=mission, ingenieur_etudes=ingenieur_etudes)
+    ingenieur_etudes = Ingenieur_Etudes.query.filter_by(id=ingenieur_etudes_id).first()
+    # affectuer(mission=mission, ingenieur_etudes=ingenieur_etudes)
+    ingenieur_etudes.affectuer(mission)
     db.session.commit()
 

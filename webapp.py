@@ -40,7 +40,7 @@ if __name__ == "__main__":
     print("creating database")
     db.drop_all()
     db.create_all()
-    from seeds import *
+    from test import *
     test_db()
     # print("database created")
     # app.run()
