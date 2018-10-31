@@ -39,8 +39,8 @@ def dateToString(date):
 
 class ActionResponse:
     def __init__(self, action):
-        date = dateToString(action.date)
-        description = format_action_desc(action)
+        self.date = dateToString(action.date)
+        self.description = format_action_desc(action)
 
 def format_action_desc(action):
     ingenieur = Ingenieur_Etudes.query.filter_by(id=action.ingenieur_etudes_id).first()
@@ -48,13 +48,13 @@ def format_action_desc(action):
     date = dateToString(action.date)
 
     def format_positionnement_desc(positionnemnt):
-        return "{ingenieur} a positionner pour mission {mission_titre} avec les souhaits {voeux} à {date}.".format(ingenieur=ingenieur.name, mission_titre=mission.title, voeux=positionnemnt.voeux,
+        return "{ingenieur} a positionné pour mission {mission_titre} avec les souhaits {voeux} à {date}.".format(ingenieur=ingenieur.name, mission_titre=mission.title, voeux=positionnemnt.voeux,
                                                                                 date=date)
 
     def format_affectuation_desc():
         return "{ingenieur} a été affectué la mission {mission_titre} à {date}.".format(ingenieur=ingenieur.name, mission_titre=mission.title, date=date)
 
-    if (action is Positionnement):
+    if isinstance(action, Positionnement):
         return format_positionnement_desc(action)
     else:
         return format_affectuation_desc()
@@ -75,7 +75,8 @@ def getVoeuxPourMission(mission_id):
     return voeux
 
 def getEvolutionPourIngenieur(ingenieur_etudes_id):
-    actions = list(Action.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
+    actions = list(Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
+    actions.extend(Affectuation.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
     actions.sort(key=lambda action1: action1.date)
     return list(map(ActionResponse, actions))
 

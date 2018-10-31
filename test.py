@@ -2,6 +2,7 @@ from service import *
 from database import Ingenieur_Etudes
 import unittest
 from database import db, Positionnement, Affectuation, Status
+import time
 
 
 class UnitTests(unittest.TestCase):
@@ -23,24 +24,32 @@ class UnitTests(unittest.TestCase):
         db.session.commit()
 
         self.supermarket_mission = addMission("go to carrefour", "it's a great supermarket", ["courses"])
-        self.jobsMission = addMission("apply to jobs", "because I'm unemployed", ["devoirs"])
+        self.jobsMission = addMission("apply to jobs", "because I'm unemployed", ["carriere"])
+        addMission("study for test", "", ["devoirs"])
         addMission("write cv", "", ["devoirs", "francais"])
         addMission("language exchage", "", ["francais", "social"])
+
+        positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
+        time.sleep(2)
+        affectuer_mission(self.jobsMission.id, self.josie.id)
 
 
     def test_all(self):
 
         def test_response_obj_1_mission():
-            positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
-            affectuer_mission(self.jobsMission.id, self.josie.id)
+
             mission = get_mission_by_id(self.jobsMission.id)
             self.assertEqual(mission.title, "apply to jobs")
             self.assertEqual(mission.description, "because I'm unemployed")
-            self.assertListEqual(mission.categories, ["devoirs"])
+            self.assertListEqual(mission.categories, ["carriere"])
             self.assertEqual(mission.status, Status.AFFECTE.value)
             self.assertEqual(mission.ingenieur_affecte.id, self.josie.id)
             self.assertEqual(mission.ingenieurs_positionnees[0].id, self.josie.id)
 
+        def test_ingenieur_evolution_response_obj():
+            evolution = getEvolutionPourIngenieur(self.josie.id)
+            self.assertTrue(evolution[0].description.startswith("Josie a positionné pour mission apply to jobs avec les souhaits just because à "))
+            self.assertTrue(evolution[1].description.startswith("Josie a été affectué la mission apply to jobs à "))
 
         def test_get_missions_a_affecter():
             missions = getMissionsAAffecter()
@@ -70,7 +79,7 @@ class UnitTests(unittest.TestCase):
 
                 def test_affectuer():
                     self.assertEqual(len(list(Affectuation.query.filter_by(mission_id=self.supermarket_mission.id))), 1)
-                    self.assertEqual(len(getMissionsAffectes()), 1)
+                    self.assertEqual(len(getMissionsAffectes()), 2)
 
                 def test_clore_flow():
                     cloreMission(self.supermarket_mission.id)
@@ -104,6 +113,7 @@ class UnitTests(unittest.TestCase):
         test_get_missions_a_affecter_categories()
         test_positionner_flow()
         test_response_obj_1_mission()
+        test_ingenieur_evolution_response_obj()
 
 
     def tearDown(self):
