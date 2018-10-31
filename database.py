@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.schema import UniqueConstraint
 import datetime
 from enum import Enum
 
@@ -63,10 +62,22 @@ class Category(db.Model):
         back_populates="categories")
 
 
-class Ingenieur_Etudes(db.Model):
-    __tablename__ = 'ingenieur_etudes'
+class Ingenieur(db.Model):
+    __tablename__ = 'ingenieur'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
+    username = db.Column(db.Text, unique=True)
+    password = db.Column(db.Text)
+
+
+class Ingenieur_Affaires(Ingenieur):
+    __tablename__ = 'ingenieur_affaires'
+    id = db.Column(db.Integer, db.ForeignKey('ingenieur.id'), primary_key=True)
+
+class Ingenieur_Etudes(Ingenieur):
+    __tablename__ = 'ingenieur_etudes'
+    id = db.Column(db.Integer, db.ForeignKey('ingenieur.id'), primary_key=True)
+
     missions_positionnes = relationship("Positionnement", back_populates="ingenieur")
     missions_affectues = relationship("Affectuation", back_populates="ingenieur")
 
@@ -91,8 +102,6 @@ class Positionnement(Action):
     mission = relationship("Mission", back_populates="ingenieurs_positionnes")
     ingenieur = relationship("Ingenieur_Etudes", back_populates="missions_positionnes")
 
-    # __table_args__ = (UniqueConstraint('mission_id', 'ingenieur_etudes_id', name='mission_ingenieur_uc'),)
-
 
 
 class Affectuation(Action):
@@ -100,7 +109,6 @@ class Affectuation(Action):
     id = db.Column(db.Integer, db.ForeignKey('action.id'), primary_key=True)
     mission = relationship("Mission", back_populates="ingenieurs_affectue")
     ingenieur = relationship("Ingenieur_Etudes", back_populates="missions_affectues")
-    # __table_args__ = (UniqueConstraint('action.mission_id', name='mission_uc'),)
 
 
 

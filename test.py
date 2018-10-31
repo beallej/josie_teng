@@ -1,5 +1,4 @@
 from service import *
-from database import Ingenieur_Etudes
 import unittest
 from database import db, Positionnement, Affectuation, Status
 import time
@@ -11,17 +10,15 @@ class UnitTests(unittest.TestCase):
     pablo = None
     felipe = None
     josie = None
+    admin = None
 
     def setUp(self):
         db.drop_all()
         db.create_all()
-        self.josie = Ingenieur_Etudes(name="Josie")
-        self.felipe = Ingenieur_Etudes(name="Felipe")
-        self.pablo = Ingenieur_Etudes(name="Pablo")
-        db.session.add(self.felipe)
-        db.session.add(self.pablo)
-        db.session.add(self.josie)
-        db.session.commit()
+        self.josie = create_account_pour_ingenieur_etudes("josieposie", "password1", "Josie")
+        self.felipe = create_account_pour_ingenieur_etudes("felipemaple", "password2", "Felipe")
+        self.pablo = create_account_pour_ingenieur_etudes("pabloingles", "password3", "Pablo")
+        self.admin = create_account_pour_ingenieur_affaires("adminaccount", "password4", "Admin")
 
         self.supermarket_mission = addMission("go to carrefour", "it's a great supermarket", ["courses"])
         self.jobsMission = addMission("apply to jobs", "because I'm unemployed", ["carriere"])
@@ -35,6 +32,13 @@ class UnitTests(unittest.TestCase):
 
 
     def test_all(self):
+
+        def test_login():
+            self.assertEqual(self.josie, login("josieposie", "password1"))
+            self.assertEqual(self.felipe, login("felipemaple", "password2"))
+            self.assertEqual(self.pablo, login("pabloingles", "password3"))
+            self.assertEqual(self.admin, login("adminaccount", "password4"))
+
 
         def test_response_obj_1_mission():
 
@@ -109,6 +113,7 @@ class UnitTests(unittest.TestCase):
             test_get_voeux_pour_mission()
             test_affectuer_flow()
 
+        test_login()
         test_get_missions_a_affecter()
         test_get_missions_a_affecter_categories()
         test_positionner_flow()

@@ -147,3 +147,26 @@ def affectuer_mission(mission_id, ingenieur_etudes_id):
     mission.affectuer(ingenieur_etudes_id)
     db.session.commit()
 
+
+
+### Accounts
+def create_account_pour_ingenieur_etudes(username, password, name):
+    account = Ingenieur_Etudes(username=username, password=password, name=name)
+    db.session.add(account)
+    db.session.commit()
+    return account
+
+
+def create_account_pour_ingenieur_affaires(username, password, name):
+    account = Ingenieur_Affaires(username=username, password=password, name=name)
+    db.session.add(account)
+    db.session.commit()
+    return account
+
+
+def login(username, password):
+    ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=password).first()
+    if ingenieur is None :
+        ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=password).first()
+    return ingenieur
+
