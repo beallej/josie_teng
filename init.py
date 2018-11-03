@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template
 
-from service import create_account_pour_ingenieur_etudes, login, create_account_pour_ingenieur_affaires
-
 app = Flask(__name__)
 app.secret_key = 'ytkey'
 app.jinja_env.trim_blocks = True
@@ -17,6 +15,7 @@ def index():
         if username == "" or password == "":
             print("No username or No password")
         else :
+            from service import login
             ingenieur = login(username,password)
         if ingenieur != None :
             print("login success")
@@ -34,35 +33,36 @@ def register():
         password2 = request.form["password2"]
         name = request.form["name"]
         type = request.form["type"]
-        print("!!!!!!" + type)
         if username == "" or password == "" or password2 == "" or name == "":
             print("No username or No password or No confirmpassword or name")
         elif password == password2:
             # if existe? same username
-            if type == "etude" :
+            if type == "Etude" :
+                from service import create_account_pour_ingenieur_etudes
                 create_account_pour_ingenieur_etudes(username,password,name)
                 print("create account etude successful")
-            else: # "affaire"
+            else: # "Affaire"
+                from service import create_account_pour_ingenieur_affaires
                 create_account_pour_ingenieur_affaires(username,password,name)
                 print("create account affaire successful")
     return render_template('Register.html')
 
-# @app.route('/add',methods=['GET','POST'])
-# def add():
-#     if request.method == 'POST':
-#         # get data from html
-#         title = request.form["title"]
-#         description = request.form["description"]
-#         categories = request.form["categories"]
-#
-#         if title == "" or description == "":
-#             print("No title or No description")
-#
-#         # add mission in database
-#         addMission(title, description, categories)
-#
-#         print("add successfully")
-#     return render_template('add.html')
+@app.route('/addmission',methods=['GET','POST'])
+def add():
+    if request.method == 'POST':
+        # get data from html
+        title = request.form["title"]
+        description = request.form["description"]
+        categories = request.form["categories"]
+        print(title)
+        print(categories)
+        if title == "" or description == "":
+            print("No title or No description")
+        # add mission in database
+        from service import addMission
+        addMission(title, description,categories)
+        print("add successfully")
+    return render_template('addmission.html')
 
 # @app.route('/showmissions',methods=['GET','POST'])
 # def showMissions():
