@@ -64,11 +64,11 @@ def add():
         print("add successfully")
     return render_template('addmission.html')
 
-# @app.route('/showmissions',methods=['GET','POST'])
-# def showMissions():
-#     from database import db, Mission
-#     missions = Mission.query.all()
-#     return render_template('showmissions.html',missions=missions)
+@app.route('/showmissions',methods=['GET','POST'])
+def showMissions():
+    from database import db, Mission
+    missions = Mission.query.all()
+    return render_template('showmissions.html',missions=missions)
 
 
 if __name__ == "__main__":
