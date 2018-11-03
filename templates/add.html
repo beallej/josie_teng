@@ -18,5 +18,16 @@
         </select>
         <input type=submit>
 </form>
+    <hr>
+    <h1>Show missions</h1><br>
+    <ul>
+    {% for mission in missions %}
+        <li>{{ employee.firstname }} {{ employee.lastname }} {{ employee.division }}
+            <a href="{{ url_for("update_employee", employee_id=employee.id) }}">Modify</a></li>
+    {% endfor %}
+</ul>
+
 </body>
+
+
 </html>

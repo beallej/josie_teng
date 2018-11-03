@@ -3,23 +3,25 @@ mission
 * id - INTEGER
 * title - VARCHAR
 * description - VARCHAR
-* categories - ARRAY OF VARCHAR
+* categories - VARCHAR
 * date_saisie - DATE
 * date_closed - DATE
 * status - VARCHAR
 
-souhaits
-* id - INT
+ingenieur_etudes
+* id - INTEGER
+* name - VARCHAR
+
+positionnement
 * voeux - VARCHAR
 * mission_id - INTEGER (FK)
 * ingenieur_etudes_id - INTEGER (FK)
-* position_date - DATE
+* date_positione - DATE
+* date_saisie - DATE
 
 affectues
-* id - INT
 * mission_id - INTEGER (FK)
 * ingenieur_etudes_id - INTEGER (FK)
 * date_affectue - DATE
 
-ingenieur_etudes
-* id - INT
+

@@ -11,7 +11,7 @@ class Mission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     description = db.Column(db.Text)
-    category = db.Column(db.Text)
+    categories = db.Column(db.Text)
     date_saisie = db.Column(db.DateTime)
     date_closed = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.Text)
