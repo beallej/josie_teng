@@ -11,7 +11,7 @@
 
         <input name="title" type="text" placeholder="title">
         <input name="description" type="text" placeholder="description">
-        <select name="category">
+        <select name="categories">
             <option>Volvo</option>
             <option>Saab</option>
             <option>Mercedes</option>
@@ -19,13 +19,7 @@
         <input type=submit>
 </form>
     <hr>
-    <h1>Show missions</h1><br>
-    <ul>
-    {% for mission in missions %}
-        <li>{{ employee.firstname }} {{ employee.lastname }} {{ employee.division }}
-            <a href="{{ url_for("update_employee", employee_id=employee.id) }}">Modify</a></li>
-    {% endfor %}
-</ul>
+
 
 </body>
 

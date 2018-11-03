@@ -1,17 +1,16 @@
 import datetime
-
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
-app.secret_key = 'ytkey'
+# app.secret_key = 'ytkey'
 
-@app.route("/",methods=['GET','POST'])
+@app.route('/',methods=['GET','POST'])
 def index():
     if request.method == 'POST':
         # get data from html
         title = request.form["title"]
         description = request.form["description"]
-        category = request.form["category"]
+        categories = request.form["categories"]
         date_saisie = datetime.date.today()
 
         if title == "" or description == "":
@@ -22,16 +21,21 @@ def index():
         new_mission = Mission()
         new_mission.title = title
         new_mission.description = description
-        new_mission.category = category
+        new_mission.categories = categories
         new_mission.date_saisie = date_saisie
-        new_mission.status = ""
+        new_mission.status = "created"
         # ingenieurs_positionnes
         # ingenieur_affectue
         db.session.add(new_mission)
         db.session.commit()
         print("add successfully")
+    return render_template('add.html')
 
-    return render_template("index.html")
+@app.route('/showmissions',methods=['GET','POST'])
+def showMissions():
+    from database import db, Mission
+    missions = Mission.query.all()
+    return render_template('showmissions.html',missions=missions)
 
 if __name__ == "__main__":
     # Create the DB
