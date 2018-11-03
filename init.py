@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 
-from service import create_account_pour_ingenieur_etudes, login
+from service import create_account_pour_ingenieur_etudes, login, create_account_pour_ingenieur_affaires
 
 app = Flask(__name__)
 app.secret_key = 'ytkey'
@@ -34,12 +34,17 @@ def register():
         password2 = request.form["password2"]
         name = request.form["name"]
         type = request.form["type"]
+        print("!!!!!!" + type)
         if username == "" or password == "" or password2 == "" or name == "":
             print("No username or No password or No confirmpassword or name")
         elif password == password2:
             # if existe? same username
-            create_account_pour_ingenieur_etudes(username,password,name)
-            print("create account successful")
+            if type == "etude" :
+                create_account_pour_ingenieur_etudes(username,password,name)
+                print("create account etude successful")
+            else: # "affaire"
+                create_account_pour_ingenieur_affaires(username,password,name)
+                print("create account affaire successful")
     return render_template('Register.html')
 
 # @app.route('/add',methods=['GET','POST'])
