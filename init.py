@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, flash
+from flask import Flask, request, render_template, flash, session
 
 app = Flask(__name__)
 app.secret_key = 'ytkey'
@@ -13,16 +13,17 @@ def index():
         username = request.form["username"]
         password = request.form["password"]
         if username == "" or password == "":
-            # flash("No username or No password")
+            wrongMsg = True
             print("No username or No password")
-            # return render_template('login.html')
+            return render_template('login.html',wrongMsg=wrongMsg)
         else:
             from service import login
             ingenieur = login(username,password)
             if ingenieur != None :
-                # flash("login success")
                 print("login success")
-                # return render_template('login.html')
+                from database import db, Mission
+                missions = Mission.query.all()
+                return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
 
             else:
                 # flash("login defeat")
@@ -70,6 +71,7 @@ def add():
         from service import addMission
         addMission(title, description,categories)
         print("add successfully")
+
     return render_template('addmission.html')
 
 # show Missions
@@ -79,6 +81,9 @@ def showMissions():
     missions = Mission.query.all()
     return render_template('showmissions.html',missions=missions)
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
 
 if __name__ == "__main__":
     # from database import db
