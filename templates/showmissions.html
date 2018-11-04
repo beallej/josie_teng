@@ -6,13 +6,13 @@
 </head>
 <body>
 <h1>Show missions</h1><br>
-    <ul>
+<ul>
     {% for mission in missions %}
         <li>{{ mission.id }} {{ mission.title }} {{ mission.description }}
-            {{ mission.categories }}{{ mission.date_saisie }}
-            {{ mission.date_closed }}{{ mission.status }}
-{#            <a href="{{ url_for("update_employee", employee_id=employee.id) }}">Modify</a></li>#}
+        {{ mission.categories }}{{ mission.date_saisie }}
+        {{ mission.date_closed }}{{ mission.status }}
+        {#            <a href="{{ url_for("update_employee", employee_id=employee.id) }}">Modify</a></li>#}
     {% endfor %}
-    </ul>
+</ul>
 </body>
 </html>
