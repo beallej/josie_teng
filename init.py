@@ -54,6 +54,7 @@ def register():
                 print("create account affaire successful")
     return render_template('Register.html')
 
+# add Mission
 @app.route('/addmission',methods=['GET','POST'])
 def add():
     if request.method == 'POST':
@@ -71,6 +72,7 @@ def add():
         print("add successfully")
     return render_template('addmission.html')
 
+# show Missions
 @app.route('/showmissions',methods=['GET','POST'])
 def showMissions():
     from database import db, Mission
