@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 
 app = Flask(__name__)
 app.secret_key = 'ytkey'
@@ -6,21 +6,28 @@ app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
 # Login
-@app.route('/',methods=['GET','POST'])
+@app.route('/login',methods=['GET','POST'])
 def index():
     if request.method == 'POST':
         # get data from html
         username = request.form["username"]
         password = request.form["password"]
         if username == "" or password == "":
+            # flash("No username or No password")
             print("No username or No password")
-        else :
+            # return render_template('login.html')
+        else:
             from service import login
             ingenieur = login(username,password)
-        if ingenieur != None :
-            print("login success")
-        else:
-            print("login defeat")
+            if ingenieur != None :
+                # flash("login success")
+                print("login success")
+                # return render_template('login.html')
+
+            else:
+                # flash("login defeat")
+                print("login defeat")
+                # return render_template('login.html')
     return render_template('login.html')
 
 # Register
