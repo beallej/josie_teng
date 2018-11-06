@@ -1,4 +1,3 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -22,8 +21,9 @@ class Status(Enum):
 
 association_table = db.Table('association',
     db.Column('mission_id', db.Integer, db.ForeignKey('mission.id')),
-    db.Column('category', db.Integer, db.ForeignKey('category.id'))
+    db.Column('categorie', db.Integer, db.ForeignKey('categorie.id'))
 )
+
 
 class Mission(db.Model):
     __tablename__ = 'mission'
@@ -31,7 +31,7 @@ class Mission(db.Model):
     title = db.Column(db.Text)
     description = db.Column(db.Text)
     categories = relationship(
-        "Category",
+        "Categorie",
         secondary=association_table,
         back_populates="missions")
     date_saisie = db.Column(db.DateTime, default=datetime.datetime.utcnow)
@@ -48,12 +48,12 @@ class Mission(db.Model):
         self.ingenieurs_affectue = affectuation
 
 
-    def close(self):
+    def cloire(self):
         self.date_closed = datetime.datetime.utcnow()
         self.status = Status.CLOS
 
-class Category(db.Model):
-    __tablename__ = 'category'
+class Categorie(db.Model):
+    __tablename__ = 'categorie'
     id = id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, unique=True)
     missions = relationship(
