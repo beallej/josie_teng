@@ -1,6 +1,7 @@
 from service import *
 import unittest
-from database import db, Positionnement, Affectuation, Status
+from database import db, Positionnement, Affectuation, Status, Category, Action
+from utils import *
 import time
 
 
@@ -15,16 +16,16 @@ class UnitTests(unittest.TestCase):
     def setUp(self):
         db.drop_all()
         db.create_all()
-        self.josie = create_account_pour_ingenieur_etudes("josieposie", "password1", "Josie")
-        self.felipe = create_account_pour_ingenieur_etudes("felipemaple", "password2", "Felipe")
-        self.pablo = create_account_pour_ingenieur_etudes("pabloingles", "password3", "Pablo")
-        self.admin = create_account_pour_ingenieur_affaires("adminaccount", "password4", "Admin")
+        self.josie = create_account("josieposie", "password1", "Josie", IngenieurType.Etudes)
+        self.felipe = create_account("felipemaple", "password2", "Felipe", IngenieurType.Etudes)
+        self.pablo = create_account("pabloingles", "password3", "Pablo", IngenieurType.Etudes)
+        self.admin = create_account("adminaccount", "password4", "Admin", IngenieurType.Affaires)
 
-        self.supermarket_mission = addMission("go to carrefour", "it's a great supermarket", ["courses"])
-        self.jobsMission = addMission("apply to jobs", "because I'm unemployed", ["carriere"])
-        addMission("study for test", "", ["devoirs"])
-        addMission("write cv", "", ["devoirs", "francais"])
-        addMission("language exchage", "", ["francais", "social"])
+        self.supermarket_mission = addMission("go to carrefour", "it's a great supermarket", "courses")
+        self.jobsMission = addMission("apply to jobs", "because I'm unemployed", "carriere")
+        addMission("study for test", "", "devoirs")
+        addMission("write cv", "", "devoirs, francais")
+        addMission("language exchage", "", "francais, social")
 
         positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
         time.sleep(2)
@@ -33,11 +34,24 @@ class UnitTests(unittest.TestCase):
 
     def test_all(self):
 
+        def test_csv_to_list():
+            csv = "a, b, c"
+            actual_list = csv_to_list(csv)
+            self.assertEqual(actual_list[0], "a")
+            self.assertEqual(actual_list[1], "b")
+            self.assertEqual(actual_list[2], "c")
+            self.assertEqual(len(actual_list), 3)
+
         def test_login():
-            self.assertEqual(self.josie, login("josieposie", "password1"))
-            self.assertEqual(self.felipe, login("felipemaple", "password2"))
-            self.assertEqual(self.pablo, login("pabloingles", "password3"))
-            self.assertEqual(self.admin, login("adminaccount", "password4"))
+            actual_josie = login("josieposie", "password1")
+            actual_admin = login("adminaccount", "password4")
+            self.assertEqual(self.josie.name, actual_josie.name)
+            self.assertEqual(self.josie.id, actual_josie.id)
+            self.assertEqual("etudes", actual_josie.type)
+            self.assertEqual(self.admin.name, actual_admin.name)
+            self.assertEqual(self.admin.id, actual_admin.id)
+            self.assertEqual("affaires", actual_admin.type)
+
 
 
         def test_response_obj_1_mission():
@@ -54,6 +68,10 @@ class UnitTests(unittest.TestCase):
             evolution = getEvolutionPourIngenieur(self.josie.id)
             self.assertTrue(evolution[0].description.startswith("Josie a positionné pour mission apply to jobs avec les souhaits just because à "))
             self.assertTrue(evolution[1].description.startswith("Josie a été affectué la mission apply to jobs à "))
+
+        def test_get_missions():
+            missions = getMissions()
+            self.assertEqual(len(missions), 5)
 
         def test_get_missions_a_affecter():
             missions = getMissionsAAffecter()
@@ -113,7 +131,9 @@ class UnitTests(unittest.TestCase):
             test_get_voeux_pour_mission()
             test_affectuer_flow()
 
+        test_csv_to_list()
         test_login()
+        test_get_missions()
         test_get_missions_a_affecter()
         test_get_missions_a_affecter_categories()
         test_positionner_flow()

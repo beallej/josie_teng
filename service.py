@@ -1,129 +1,64 @@
-# add mission in database
-from database import db, Ingenieur_Etudes, Ingenieur_Affaires
+from dto import *
+from database import *
+from sqlite3 import IntegrityError
 
+def getMissions(status=None):
+    if status == None :
+        return list(map(MissionResponse, Mission.query.all()))
 
-class MissionResponse:
-    def __init__(self, mission):
-        self.id = mission.id
-        self.title = mission.title
-        self.description = mission.description
-        self.categories = list(map(lambda category: category.name, mission.categories))
-        self.status = mission.status.value
-        self.date_saisie = dateToString(mission.date_saisie)
-        self.date_closed = dateToString(mission.date_closed)
-        self.date_closed = None if mission.date_closed is None else mission.date_closed.astimezone().strftime("%Y-%m-%d %H:%M:%S")
-        self.ingenieurs_positionnees = list(map(IngenieurResponseChild, mission.ingenieurs_positionnes))
-        self.ingenieur_affecte = IngenieurResponseChild(mission.ingenieurs_affectue) if mission.ingenieurs_affectue else None
-
-class MissionResponseChild:
-    def __init__(self, mission):
-        self.id = mission.id
-        self.title = mission.title
-
-class IngenieurResponseChild:
-    def __init__(self, action):
-        self.id = action.ingenieur_etudes_id
-
-class IngenieurResponse:
-    def __init__(self, ingenieur_etudes):
-        self.id = ingenieur_etudes.id
-        self.name = ingenieur_etudes.name
-        self.missions_positionnes = list(map(MissionResponseChild, ingenieur_etudes.missions_positionnes))
-        self.missions_affectues = list(map(MissionResponseChild, ingenieur_etudes.missions_affectues))
-
-
-
-def dateToString(date):
-    return None if date is None else date.astimezone().strftime(
-        "%Y-%m-%d %H:%M:%S")
-
-class ActionResponse:
-    def __init__(self, action):
-        self.date = dateToString(action.date)
-        self.description = format_action_desc(action)
-
-def format_action_desc(action):
-    from database import Ingenieur_Etudes
-    ingenieur = Ingenieur_Etudes.query.filter_by(id=action.ingenieur_etudes_id).first()
-    from database import Mission
-    mission = Mission.query.filter_by(id=action.mission_id).first()
-    date = dateToString(action.date)
-
-    def format_positionnement_desc(positionnemnt):
-        return "{ingenieur} a positionné pour mission {mission_titre} avec les souhaits {voeux} à {date}.".format(ingenieur=ingenieur.name, mission_titre=mission.title, voeux=positionnemnt.voeux,
-                                                                                date=date)
-
-    def format_affectuation_desc():
-        return "{ingenieur} a été affectué la mission {mission_titre} à {date}.".format(ingenieur=ingenieur.name, mission_titre=mission.title, date=date)
-
-    from database import Positionnement
-    if isinstance(action, Positionnement):
-        return format_positionnement_desc(action)
-    else:
-        return format_affectuation_desc()
-
-def getMissionsAvecStatus(status):
-    from database import Mission
-    missions = Mission.query.filter_by(status=status)
-    return list(map(MissionResponse, missions))
+    return list(map(MissionResponse, Mission.query.filter_by(status=status)))
 
 def getMissionsAffectes():
-    from database import Status
-    return getMissionsAvecStatus(Status.AFFECTE)
+    return getMissions(status=Status.AFFECTE)
 
 def getMissionsClosed():
-    from database import Status
-    return getMissionsAvecStatus(Status.CLOS)
+    return getMissions(status=Status.CLOS)
 
 def getVoeuxPourMission(mission_id):
-    from database import Mission
     mission = Mission.query.filter_by(id=mission_id).first()
     voeux = list(map(lambda ing: ing.voeux, mission.ingenieurs_positionnes))
     return voeux
 
 def getEvolutionPourIngenieur(ingenieur_etudes_id):
-    from database import Positionnement
     actions = list(Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
-    from database import Affectuation
     actions.extend(Affectuation.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
     actions.sort(key=lambda action1: action1.date)
     return list(map(ActionResponse, actions))
 
 def getMissionsAAffecter(categories=None):
     if categories is None:
-        from database import Status
-        return getMissionsAvecStatus(Status.A_AFFECTER)
+        return getMissions(status=Status.A_AFFECTER)
     missions_pour_categories = set()
     for category_desire in categories:
-        from database import Category
         missions_pour_category = Category.query.filter_by(name=category_desire).first().missions
         missions_pour_categories = missions_pour_categories.union(set(missions_pour_category))
     missions_a_affecter_pour_categories = list(map(MissionResponse, filter(lambda mission: mission.status == Status.A_AFFECTER, missions_pour_categories)))
     return missions_a_affecter_pour_categories
 
 def get_mission_by_id(id):
-    from database import Mission
     mission = MissionResponse(Mission.query.filter_by(id=id).first())
     return mission
 
 def get_ingenieur_by_id(id):
-    from database import Ingenieur_Etudes
     return Ingenieur_Etudes.query.filter_by(id=id).first()
+
+
+
 
 ### ACTIONS
 
-
 def addMission(title, description, categories):
-    from database import Mission
     new_mission = Mission()
     new_mission.title = title
     new_mission.description = description
+    categories = csv_to_list(categories)
     for category in categories:
-        from database import Category
-        category_obj = Category.query.filter_by(name=category).first() or Category(name=category)
-        new_mission.categories.append(category_obj)
+        category_obj = Category.query.filter_by(name=category).first()
+        if category_obj is None:
+            category_obj = Category(name=category)
+            db.session.add(category_obj)
+        category_obj.missions.append(new_mission)
 
-    from database import db
     db.session.add(new_mission)
     db.session.commit()
     return new_mission
@@ -166,24 +101,27 @@ def affectuer_mission(mission_id, ingenieur_etudes_id):
 
 
 ### Accounts
-def create_account_pour_ingenieur_etudes(username, password, name):
-    account = Ingenieur_Etudes(username=username, password=password, name=name)
-    db.session.add(account)
-    db.session.commit()
-    return account
 
+def create_account(username, password, name, type):
+    if type == IngenieurType.Affaires:
+        account = Ingenieur_Affaires(username=username, password=password, name=name)
+    else:
+        account = Ingenieur_Etudes(username=username, password=password, name=name)
 
-def create_account_pour_ingenieur_affaires(username, password, name):
-    account = Ingenieur_Affaires(username=username, password=password, name=name)
     db.session.add(account)
-    db.session.commit()
-    return account
+    try:
+        db.session.commit()
+        return account
+    except IntegrityError:
+        return Exception("Nom d'utilisateur pas disponible")
 
 
 def login(username, password):
     ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=password).first()
     if ingenieur is None :
         ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=password).first()
-    return ingenieur
+    return LoginResponse(ingenieur)
+
+
 
 
