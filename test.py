@@ -32,15 +32,28 @@ class UnitTests(unittest.TestCase):
         affectuer_mission(self.jobsMission.id, self.josie.id)
 
 
+
     def test_all(self):
 
-        def test_csv_to_list():
-            csv = "a, b, c"
-            actual_list = csv_to_list(csv)
-            self.assertEqual(actual_list[0], "a")
-            self.assertEqual(actual_list[1], "b")
-            self.assertEqual(actual_list[2], "c")
-            self.assertEqual(len(actual_list), 3)
+        def test_utils():
+
+            def test_encrypt_password():
+                password = "secret"
+                encrypted_password = encrypt_password(password)
+                second_password = "secret"
+                self.assertEqual(encrypt_password(second_password), encrypted_password)
+
+
+            def test_csv_to_list():
+                csv = "a, b, c"
+                actual_list = csv_to_list(csv)
+                self.assertEqual(actual_list[0], "a")
+                self.assertEqual(actual_list[1], "b")
+                self.assertEqual(actual_list[2], "c")
+                self.assertEqual(len(actual_list), 3)
+
+            test_csv_to_list()
+            test_encrypt_password()
 
         def test_login():
             actual_josie = login("josieposie", "password1")
@@ -131,7 +144,7 @@ class UnitTests(unittest.TestCase):
             test_get_voeux_pour_mission()
             test_affectuer_flow()
 
-        test_csv_to_list()
+        test_utils()
         test_login()
         test_get_missions()
         test_get_missions_a_affecter()

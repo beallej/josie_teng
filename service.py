@@ -1,6 +1,5 @@
 from dto import *
 from database import *
-from sqlite3 import IntegrityError
 
 def get_missions(status=None):
     if status == None :
@@ -101,12 +100,12 @@ def affectuer_mission(mission_id, ingenieur_etudes_id):
 
 
 ### Accounts
-
 def create_account(username, password, name, type):
+    encrypted_password = encrypt_password(password)
     if type == IngenieurType.Affaires:
-        account = Ingenieur_Affaires(username=username, password=password, name=name)
+        account = Ingenieur_Affaires(username=username, password=encrypted_password, name=name)
     else:
-        account = Ingenieur_Etudes(username=username, password=password, name=name)
+        account = Ingenieur_Etudes(username=username, password=encrypted_password, name=name)
     db.session.add(account)
     try:
         db.session.commit()
@@ -117,9 +116,10 @@ def create_account(username, password, name, type):
 
 
 def login(username, password):
-    ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=password).first()
+    encrypted_password = encrypt_password(password)
+    ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=encrypted_password).first()
     if ingenieur is None:
-        ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=password).first()
+        ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=encrypted_password).first()
     return LoginResponse(ingenieur)
 
 

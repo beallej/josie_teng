@@ -24,6 +24,7 @@ association_table = db.Table('association',
     db.Column('categorie', db.Integer, db.ForeignKey('categorie.id'))
 )
 
+
 class Mission(db.Model):
     __tablename__ = 'mission'
     id = db.Column(db.Integer, primary_key=True)
