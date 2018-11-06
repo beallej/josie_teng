@@ -25,7 +25,7 @@
 {#    <h2>UserName: {{ ingenieur.name }}</h2>#}
 {#</div>#}
 <section class="bg-light text-center py-5">
-    <h2>All Missions</h2>
+    <h2>Missions À Affecter</h2>
     <div class="container">
         <table class="table table-hover table-bordered">
             <thead>
@@ -42,7 +42,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for mission in missions %}
+            {% for mission in missionsAAffecter %}
                 <tr>
                     <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
@@ -51,20 +51,86 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    {#                    {% if mission.status == "Status.A_AFFECTER" %}#}
                     <td><input name="reason" type="text" placeholder="Input the reason"></td>
                     <td>
-                        <button class="btn btn-primary">Apply to</button>
+                        <button class="btn btn-primary" type="submit">Apply to</button>
                     </td>
-                    {#                    {% endif %}#}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    <a href="addmission" class="btn btn-danger mt-4">Add New Mission</a>
+        <a href="addmission" class="btn btn-danger mt-4">Add New Mission</a>
     </div>
 </section>
+<hr>
+<section class="bg-light text-center py-5">
+    <h2>Missions Affectée</h2>
+    <div class="container">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Title</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Categories</th>
+                <th class="text-center">Date_saisie</th>
+                <th class="text-center">Date_closed</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Reason</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mission in missionsAffectes %}
+                <tr>
+                    <td>{{ mission.id }}</td>
+                    <td>{{ mission.title }}</td>
+                    <td>{{ mission.description }}</td>
+                    <td>{{ mission.categories }}</td>
+                    <td>{{ mission.date_saisie }}</td>
+                    <td>{{ mission.date_closed }}</td>
+                    <td>{{ mission.status }}</td>
+                    <td><input name="reason" type="text" placeholder="Input the reason"></td>
 
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<hr>
+<section class="bg-light text-center py-5">
+    <h2>Missions Closed</h2>
+    <div class="container">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Title</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Categories</th>
+                <th class="text-center">Date_saisie</th>
+                <th class="text-center">Date_closed</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Reason</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mission in missionsClosed %}
+                <tr>
+                    <td>{{ mission.id }}</td>
+                    <td>{{ mission.title }}</td>
+                    <td>{{ mission.description }}</td>
+                    <td>{{ mission.categories }}</td>
+                    <td>{{ mission.date_saisie }}</td>
+                    <td>{{ mission.date_closed }}</td>
+                    <td>{{ mission.status }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<hr>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
