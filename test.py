@@ -1,6 +1,6 @@
 from service import *
 import unittest
-from database import db, Positionnement, Affectuation, Status, Category, Action
+from database import db, Positionnement, Affectuation, Status, Categorie, Action
 from utils import *
 import time
 
@@ -21,11 +21,11 @@ class UnitTests(unittest.TestCase):
         self.pablo = create_account("pabloingles", "password3", "Pablo", IngenieurType.Etudes)
         self.admin = create_account("adminaccount", "password4", "Admin", IngenieurType.Affaires)
 
-        self.supermarket_mission = addMission("go to carrefour", "it's a great supermarket", "courses")
-        self.jobsMission = addMission("apply to jobs", "because I'm unemployed", "carriere")
-        addMission("study for test", "", "devoirs")
-        addMission("write cv", "", "devoirs, francais")
-        addMission("language exchage", "", "francais, social")
+        self.supermarket_mission = add_mission("go to carrefour", "it's a great supermarket", "courses")
+        self.jobsMission = add_mission("apply to jobs", "because I'm unemployed", "carriere")
+        add_mission("study for test", "", "devoirs")
+        add_mission("write cv", "", "devoirs, francais")
+        add_mission("language exchage", "", "francais, social")
 
         positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
         time.sleep(2)
@@ -65,24 +65,24 @@ class UnitTests(unittest.TestCase):
             self.assertEqual(mission.ingenieurs_positionnees[0].id, self.josie.id)
 
         def test_ingenieur_evolution_response_obj():
-            evolution = getEvolutionPourIngenieur(self.josie.id)
+            evolution = get_evolution_pour_ingenieur(self.josie.id)
             self.assertTrue(evolution[0].description.startswith("Josie a positionné pour mission apply to jobs avec les souhaits just because à "))
             self.assertTrue(evolution[1].description.startswith("Josie a été affectué la mission apply to jobs à "))
 
         def test_get_missions():
-            missions = getMissions()
+            missions = get_missions()
             self.assertEqual(len(missions), 5)
 
         def test_get_missions_a_affecter():
-            missions = getMissionsAAffecter()
+            missions = get_missions_a_affecter()
             self.assertEqual(len(missions), 4)
 
         def test_get_missions_a_affecter_categories():
-            missions_devoirs = getMissionsAAffecter(categories=["devoirs"])
+            missions_devoirs = get_missions_a_affecter(categories=["devoirs"])
             self.assertEqual(len(missions_devoirs), 2)
-            missions_francais = getMissionsAAffecter(categories=["francais"])
+            missions_francais = get_missions_a_affecter(categories=["francais"])
             self.assertEqual(len(missions_francais), 2)
-            missions_devoirs_francais = getMissionsAAffecter(categories=["devoirs", "francais"])
+            missions_devoirs_francais = get_missions_a_affecter(categories=["devoirs", "francais"])
             self.assertEqual(len(missions_devoirs_francais), 3)
 
         def test_positionner_flow():
@@ -93,7 +93,7 @@ class UnitTests(unittest.TestCase):
                 self.assertEqual(len(list(Positionnement.query.filter_by(mission_id=self.supermarket_mission.id))), 2)
 
             def test_get_voeux_pour_mission():
-                supermarket_voeux = getVoeuxPourMission(self.supermarket_mission.id)
+                supermarket_voeux = get_voeux_pour_mission(self.supermarket_mission.id)
                 self.assertListEqual(sorted(supermarket_voeux),  sorted(list({"i want to compare all of the products", "i want felipe to hurry up"})))
 
             def test_affectuer_flow():
@@ -101,21 +101,21 @@ class UnitTests(unittest.TestCase):
 
                 def test_affectuer():
                     self.assertEqual(len(list(Affectuation.query.filter_by(mission_id=self.supermarket_mission.id))), 1)
-                    self.assertEqual(len(getMissionsAffectes()), 2)
+                    self.assertEqual(len(get_missions_affectes()), 2)
 
                 def test_clore_flow():
-                    cloreMission(self.supermarket_mission.id)
+                    clore_mission(self.supermarket_mission.id)
                     self.supermarket_mission = get_mission_by_id(self.supermarket_mission.id)
 
                     def test_clore_mission():
                         self.assertEqual(self.supermarket_mission.status, Status.CLOS.value)
-                        self.assertEqual(len(getMissionsAAffecter()), 3)
+                        self.assertEqual(len(get_missions_a_affecter()), 3)
 
                     def test_supprimer_mission():
-                        supprimerMission(self.supermarket_mission.id)
+                        supprimer_mission(self.supermarket_mission.id)
                         self.assertEqual(len(list(Affectuation.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
                         self.assertEqual(len(list(Positionnement.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
-                        self.assertEqual(len(Category.query.filter_by(name="courses").first().missions), 0)
+                        self.assertEqual(len(Categorie.query.filter_by(name="courses").first().missions), 0)
                         self.assertEqual(len(list(Action.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
                         self.pablo = get_ingenieur_by_id(self.pablo.id)
                         self.assertEqual(len(self.pablo.missions_positionnes), 0)

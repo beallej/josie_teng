@@ -2,36 +2,36 @@ from dto import *
 from database import *
 from sqlite3 import IntegrityError
 
-def getMissions(status=None):
+def get_missions(status=None):
     if status == None :
         return list(map(MissionResponse, Mission.query.all()))
 
     return list(map(MissionResponse, Mission.query.filter_by(status=status)))
 
-def getMissionsAffectes():
-    return getMissions(status=Status.AFFECTE)
+def get_missions_affectes():
+    return get_missions(status=Status.AFFECTE)
 
-def getMissionsClosed():
-    return getMissions(status=Status.CLOS)
+def get_missions_closes():
+    return get_missions(status=Status.CLOS)
 
-def getVoeuxPourMission(mission_id):
+def get_voeux_pour_mission(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
     voeux = list(map(lambda ing: ing.voeux, mission.ingenieurs_positionnes))
     return voeux
 
-def getEvolutionPourIngenieur(ingenieur_etudes_id):
+def get_evolution_pour_ingenieur(ingenieur_etudes_id):
     actions = list(Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
     actions.extend(Affectuation.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
     actions.sort(key=lambda action1: action1.date)
     return list(map(ActionResponse, actions))
 
-def getMissionsAAffecter(categories=None):
+def get_missions_a_affecter(categories=None):
     if categories is None:
-        return getMissions(status=Status.A_AFFECTER)
+        return get_missions(status=Status.A_AFFECTER)
     missions_pour_categories = set()
-    for category_desire in categories:
-        missions_pour_category = Category.query.filter_by(name=category_desire).first().missions
-        missions_pour_categories = missions_pour_categories.union(set(missions_pour_category))
+    for categorie_desire in categories:
+        missions_pour_categorie = Categorie.query.filter_by(name=categorie_desire).first().missions
+        missions_pour_categories = missions_pour_categories.union(set(missions_pour_categorie))
     missions_a_affecter_pour_categories = list(map(MissionResponse, filter(lambda mission: mission.status == Status.A_AFFECTER, missions_pour_categories)))
     return missions_a_affecter_pour_categories
 
@@ -47,28 +47,28 @@ def get_ingenieur_by_id(id):
 
 ### ACTIONS
 
-def addMission(title, description, categories):
+def add_mission(title, description, categories):
     new_mission = Mission()
     new_mission.title = title
     new_mission.description = description
     categories = csv_to_list(categories)
-    for category in categories:
-        category_obj = Category.query.filter_by(name=category).first()
-        if category_obj is None:
-            category_obj = Category(name=category)
-            db.session.add(category_obj)
-        category_obj.missions.append(new_mission)
+    for categorie in categories:
+        categorie_obj = Categorie.query.filter_by(name=categorie).first()
+        if categorie_obj is None:
+            categorie_obj = Categorie(name=categorie)
+            db.session.add(categorie_obj)
+        categorie_obj.missions.append(new_mission)
 
     db.session.add(new_mission)
     db.session.commit()
     return new_mission
 
-def cloreMission(mission_id):
+def clore_mission(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
-    mission.close()
+    mission.cloire()
     db.session.commit()
 
-def supprimerMission(mission_id):
+def supprimer_mission(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
     positionnements = Positionnement.query.filter_by(mission_id=mission_id)
     for positionnement in positionnements:
@@ -79,9 +79,9 @@ def supprimerMission(mission_id):
     ingenieur = affectuation.ingenieur
     ingenieur.missions_affectues.remove(affectuation)
     db.session.merge(ingenieur)
-    for category in mission.categories:
-        category.missions.remove(mission)
-        db.session.merge(category)
+    for categorie in mission.categories:
+        categorie.missions.remove(mission)
+        db.session.merge(categorie)
     map(db.session.delete, list(positionnements))
     db.session.delete(affectuation)
     db.session.delete(mission)
@@ -107,18 +107,18 @@ def create_account(username, password, name, type):
         account = Ingenieur_Affaires(username=username, password=password, name=name)
     else:
         account = Ingenieur_Etudes(username=username, password=password, name=name)
-
     db.session.add(account)
     try:
         db.session.commit()
         return account
-    except IntegrityError:
-        return Exception("Nom d'utilisateur pas disponible")
+    except Exception:
+        db.session.rollback()
+        raise Exception("Nom d'utilisateur pas disponible")
 
 
 def login(username, password):
     ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=password).first()
-    if ingenieur is None :
+    if ingenieur is None:
         ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=password).first()
     return LoginResponse(ingenieur)
 

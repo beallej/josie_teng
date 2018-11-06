@@ -11,10 +11,10 @@ class MissionResponse:
         self.id = mission.id
         self.title = mission.title
         self.description = mission.description
-        self.categories = list(map(lambda category: category.name, mission.categories))
+        self.categories = list(map(lambda categorie: categorie.name, mission.categories))
         self.status = mission.status.value
-        self.date_saisie = dateToString(mission.date_saisie)
-        self.date_closed = dateToString(mission.date_closed)
+        self.date_saisie = date_to_string(mission.date_saisie)
+        self.date_closed = date_to_string(mission.date_closed)
         self.date_closed = None if mission.date_closed is None else mission.date_closed.astimezone().strftime(
             "%Y-%m-%d %H:%M:%S")
         self.ingenieurs_positionnees = list(map(IngenieurResponseChild, mission.ingenieurs_positionnes))
@@ -53,14 +53,14 @@ class LoginResponse:
 
 class ActionResponse:
     def __init__(self, action):
-        self.date = dateToString(action.date)
+        self.date = date_to_string(action.date)
         self.description = format_action_desc(action)
 
 
 def format_action_desc(action):
     ingenieur = Ingenieur_Etudes.query.filter_by(id=action.ingenieur_etudes_id).first()
     mission = Mission.query.filter_by(id=action.mission_id).first()
-    date = dateToString(action.date)
+    date = date_to_string(action.date)
 
     def format_positionnement_desc(positionnemnt):
         return "{ingenieur} a positionné pour mission {mission_titre} avec les souhaits {voeux} à {date}.".format(

@@ -21,7 +21,7 @@ def index():
             ingenieur = login(username,password)
             if ingenieur != None :
                 print("login success")
-                missions = getMissions()
+                missions = get_missions()
                 return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
 
             else:
@@ -70,15 +70,15 @@ def add():
         if title == "" or description == "":
             print("No title or No description")
         # add mission in database
-        addMission(title, description, categories)
+        add_mission(title, description, categories)
         print("add successfully")
 
     return render_template('addmission.html')
 
 # show Missions
 @app.route('/showmissions',methods=['GET','POST'])
-def showMissions():
-    missions = getMissions()
+def show_missions():
+    missions = get_missions()
     return render_template('showmissions.html', missions=missions)
 
 @app.errorhandler(404)
