@@ -52,24 +52,25 @@ def positionner(id):
     positionner_pour_mission(mission_id, id, voeux)
     return redirect(url_for('ingenieur_etudes', ingenieur_id=id))
 
-@app.route('/misson/<id>/affectuer', methods=['PUT'])
+@app.route('/misson/<id>/affectuer', methods=['POST'])
 def affectuer(id):
     ingenieur_etudes_id = request.form["ingenieur_etudes_id"]
     ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
     affectuer_mission(id, ingenieur_etudes_id)
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
-@app.route('/misson/<id>/delete', methods=['DELETE'])
+@app.route('/misson/<id>/delete', methods=['POST'])
 def suprimmer_mission(id):
     supprimer_mission(id)
     ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
-@app.route('/misson/<id>/close', methods=['PUT'])
+@app.route('/misson/<id>/close', methods=['POST'])
 def close_mission(id):
     ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
     clore_mission(id)
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
+
 
 
 # Register
