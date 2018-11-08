@@ -33,12 +33,9 @@
                 <th class="text-center">Date_saisie</th>
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
-<<<<<<< 560804c92516fc13b87ef791de3b877f4e4cd4fb
                 <th class="text-center">Close</th>
                 <th class="text-center">Supprimer</th>
-=======
                 <th class="text-center"></th>
->>>>>>> Josie | view positionnements for mission
             </tr>
             </thead>
             <tbody>
@@ -51,7 +48,6 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-<<<<<<< 560804c92516fc13b87ef791de3b877f4e4cd4fb
                     <form method="post" action="{{ url_for("close_mission", ingenieur_id=ingenieur_aff.id ) }}">
                         <td>
                             <button class="btn btn-primary" type="submit">Close</button>
@@ -63,12 +59,10 @@
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
-=======
                     <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}" >
                         <td>
                             <button class="btn btn-primary" type="submit">Détail</button>
                         </td>
->>>>>>> Josie | view positionnements for mission
                     </form>
                 </tr>
             {% endfor %}
@@ -92,7 +86,6 @@
                 <th class="text-center">Date_saisie</th>
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Reason</th>
                 <th class="text-center">Close</th>
                 <th class="text-center">Supprimer</th>
                 <th class="text-center"></th>
@@ -108,7 +101,6 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    <td> reason</td>
                     <form method="post" action="{{ url_for("close_mission", ingenieur_id=ingenieur_aff.id ) }}">
                         <td>
                             <button class="btn btn-primary" type="submit">Close</button>
@@ -120,7 +112,6 @@
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
-                    <td><input name="reason" type="text" placeholder="Input the reason"></td>
                     <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}" >
                         <td>
                             <button class="btn btn-primary" type="submit">Détail</button>
@@ -147,7 +138,6 @@
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Supprimer</th>
-                <th class="text-center">Reason</th>
                 <th class="text-center"></th>
             </tr>
             </thead>
