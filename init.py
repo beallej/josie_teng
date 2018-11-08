@@ -30,7 +30,7 @@ def index():
                 if ingenieur.type == "etudes" and type == "Etudes" :
                     print("Etude login success")
                     missions = get_missions()
-                    url = url_for("show_missions", ingenieur_id=ingenieur.id)
+                    url = url_for("showMissions", ingenieur_id=ingenieur.id)
                     print(url)
                     # redirect(url)
                     # return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
@@ -80,8 +80,8 @@ def register():
 
 
 # add Mission
-@app.route('/showmissions/addmission', methods=['GET', 'POST'])
-def add():
+@app.route('/showmissions/<ingenieur_id>/addmission', methods=['GET', 'POST'])
+def addMission(ingenieur_id):
     if request.method == 'POST':
         # get data from html
         title = request.form["title"]
@@ -95,14 +95,11 @@ def add():
         add_mission(title, description, categories)
 
         print("add successfully")
-
-    return render_template('addmission.html')
-
+    return render_template('addmission.html',ingenieur_id=ingenieur_id)
 
 # show Missions
-
 @app.route('/showmissions/<ingenieur_id>',methods=['GET','POST'])
-def show_missions(ingenieur_id):
+def showMissions(ingenieur_id):
     # missions = get_missions()
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
@@ -112,9 +109,8 @@ def show_missions(ingenieur_id):
                            missionsClosed=missionsClosed,
                            ingenieur_id=ingenieur_id)
 
-
 @app.errorhandler(404)
-def not_found(e):
+def notFound(e):
     return render_template('404.html')
 
 
