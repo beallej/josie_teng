@@ -30,12 +30,12 @@ def index():
                 if ingenieur.type == "etudes" and type == "Etudes" :
                     print("Etude login success")
                     missions = get_missions()
-                    # print(url_for("show_missions",ingenieur_id=ingenieur.id))
-                    # url=url_for("show_missions",ingenieur_id=ingenieur.id)
+                    url = url_for("show_missions", ingenieur_id=ingenieur.id)
+                    print(url)
                     # redirect(url)
                     # return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
                     # flask.redirect(flask.url_for("show_missions"),ingenieur_id=ingenieur.id)
-                    return flask.redirect(flask.url_for("show_missions"),ingenieur_id=ingenieur.id)
+                    return redirect(url)
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
                     print("Affaire login success")
@@ -80,7 +80,7 @@ def register():
 
 
 # add Mission
-@app.route('/addmission', methods=['GET', 'POST'])
+@app.route('/showmissions/addmission', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
         # get data from html
@@ -103,8 +103,14 @@ def add():
 
 @app.route('/showmissions/<ingenieur_id>',methods=['GET','POST'])
 def show_missions(ingenieur_id):
-    missions = get_missions()
-    return render_template('showmissions.html', missions=missions,ingenieur_id=ingenieur_id)
+    # missions = get_missions()
+    missionsAAffecter = get_missions_a_affecter()
+    missionsAffectes = get_missions_affectes()
+    missionsClosed = get_missions_closes()
+    return render_template('showmissions.html', missionsAAffecter=missionsAAffecter,
+                           missionsAffectes=missionsAffectes,
+                           missionsClosed=missionsClosed,
+                           ingenieur_id=ingenieur_id)
 
 
 @app.errorhandler(404)
