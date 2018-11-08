@@ -58,13 +58,14 @@
             {% endfor %}
             </tbody>
         </table>
-        {% if return_type =="AFFAIRE" %}
-            <a href="{{ url_for("ingenieur_affaires", ingenieur_id = affaire_id) }}" class="btn btn-info">
-                Retourner </a>
-        {% endif %}
-        {% if return_type =="ETUDE" %}
+    {% print(return_type) %}
+{#        {% if return_type =="AFFAIRE" %}#}
+{#            <a href="{{ url_for("ingenieur_affaires", ingenieur_id = affaire_id) }}" class="btn btn-info">#}
+{#                Retourner </a>#}
+{#        {% endif %}#}
+{#        {% if return_type =="ETUDE" %}#}
             <a href="{{ url_for("ingenieur_etudes", ingenieur_id = ingenieur.id) }}" class="btn btn-info">
                 Retourner </a>
-        {% endif %}
+{#        {% endif %}#}
     </div>
 </section>
