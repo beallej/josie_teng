@@ -40,16 +40,32 @@ def get_missions_a_affecter(categories=None):
     for categorie_desire in categories:
         missions_pour_categorie = Categorie.query.filter_by(name=categorie_desire).first().missions
         missions_pour_categories = missions_pour_categories.union(set(missions_pour_categorie))
+
+
     missions_a_affecter_pour_categories = list(map(MissionResponse, filter(lambda mission: mission.status == Status.A_AFFECTER, missions_pour_categories)))
     return missions_a_affecter_pour_categories
+
+
+def get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_etudes_id, categories=None):
+    positionnements = Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id)
+    missions_a_affecter = get_missions_a_affecter(categories)
+    for positionnement in positionnements:
+        missions_a_affecter = filter(lambda mission: mission.id != positionnement.mission_id, missions_a_affecter)
+
+    return list(missions_a_affecter)
+
+
+
 
 def get_mission_by_id(id):
     mission = MissionResponse(Mission.query.filter_by(id=id).first())
     return mission
 
-def get_ingenieur_by_id(id):
+def get_ingenieur_etudes_by_id(id):
     return Ingenieur_Etudes.query.filter_by(id=id).first()
 
+def get_ingenieur_affaires_by_id(id):
+    return Ingenieur_Affaires.query.filter_by(id=id).first()
 
 
 
