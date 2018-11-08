@@ -149,7 +149,8 @@ def ingenieur_etudes(ingenieur_id):
     categories_list = None
     if request.method == 'POST':
         categories_raw = request.form["categories"]
-        categories_list = csv_to_list(categories_raw.lower())
+        if categories_raw != None and categories_raw!= "":
+            categories_list = csv_to_list(categories_raw.lower())
     missions_a_affecter = get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_id, categories_list)
 
     return render_template('ingenieur_etudes.html', missionsAAffecter=missions_a_affecter,
