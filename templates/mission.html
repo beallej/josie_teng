@@ -14,7 +14,7 @@
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3"></h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Positionnements de Missions</h1><br>
     </div>
 </header>
 
@@ -27,6 +27,7 @@
                 <th class="text-center">Ingenieur</th>
                 <th class="text-center">Voeux</th>
                 <th class="text-center">Date Positionné</th>
+                <th class="text-center">Affecter</th>
             </tr>
             </thead>
             <tbody>
@@ -35,7 +36,13 @@
                     <td>{{ positionnement.ingenieur_etudes_name }}</td>
                     <td>{{ positionnement.voeux }}</td>
                     <td>{{ positionnement.date_positionne }}</td>
-
+                    <form method="post" action="{{ url_for("affectuer_mission", id=mission.id) }}">
+                        <td>
+                            <button class="btn btn-danger" type="submit">Affecter</button>
+                        </td>
+                        <input type="hidden" name="ingenieur_etudes_id" value="{{ positionnement.ingenieur_etudes_id }}"/>
+                        <input type="hidden" name="ingenieur_affairs_id" value="{{ ingenieur.id }}"/>
+                    </form>
                 </tr>
             {% endfor %}
             </tbody>

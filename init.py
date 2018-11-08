@@ -66,10 +66,10 @@ def voir_mission_detail(id):
     return render_template('mission.html', mission=mission, ingenieur=ingenieur_logged_in)
 
 @app.route('/mission/<id>/affectuer', methods=['POST'])
-def affectuer(id):
+def affectuer_mission(id):
     ingenieur_etudes_id = request.form["ingenieur_etudes_id"]
     ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
-    affectuer_mission(id, ingenieur_etudes_id)
+    affectuer_mission__from_db(id, ingenieur_etudes_id)
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
 

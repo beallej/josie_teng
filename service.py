@@ -130,7 +130,7 @@ def positionner_pour_mission(mission_id, ingenieur_etudes_id, voeux):
     db.session.commit()
 
 
-def affectuer_mission(mission_id, ingenieur_etudes_id):
+def affectuer_mission__from_db(mission_id, ingenieur_etudes_id):
     mission = Mission.query.filter_by(id=mission_id).first()
     mission.affectuer(ingenieur_etudes_id)
     db.session.commit()

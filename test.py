@@ -29,7 +29,7 @@ class UnitTests(unittest.TestCase):
 
         positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
         time.sleep(2)
-        affectuer_mission(self.jobsMission.id, self.josie.id)
+        affectuer_mission__from_db(self.jobsMission.id, self.josie.id)
 
 
 
@@ -114,7 +114,7 @@ class UnitTests(unittest.TestCase):
                 self.assertListEqual(sorted(supermarket_voeux),  sorted(list({"i want to compare all of the products", "i want felipe to hurry up"})))
 
             def test_affectuer_flow():
-                affectuer_mission(self.supermarket_mission.id, self.pablo.id)
+                affectuer_mission__from_db(self.supermarket_mission.id, self.pablo.id)
 
                 def test_affectuer():
                     self.assertEqual(len(list(Affectuation.query.filter_by(mission_id=self.supermarket_mission.id))), 1)
