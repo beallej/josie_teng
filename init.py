@@ -29,12 +29,12 @@ def index():
                 print("type = " + type)
                 if ingenieur.type == "etudes" and type == "Etudes" :
                     print("Etude login success")
-                    url = url_for("ingenieurEtudes", ingenieur_id=ingenieur.id)
+                    url = url_for("ingenieur_etudes", ingenieur_id=ingenieur.id)
                     return redirect(url)
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
                     print("Affaire login success")
-                    url = url_for("ingenieurAffaires", ingenieur_id=ingenieur.id)
+                    url = url_for("ingenieu_affaires", ingenieur_id=ingenieur.id)
                     return redirect(url)
                 else:
                     print("choisir la correct position svp")
@@ -74,7 +74,7 @@ def register():
 
 # add Mission
 @app.route('/showmissions/<ingenieur_id>/addmission', methods=['GET', 'POST'])
-def addMission(ingenieur_id):
+def add_mission(ingenieur_id):
     if request.method == 'POST':
         # get data from html
         title = request.form["title"]
@@ -84,20 +84,20 @@ def addMission(ingenieur_id):
             print("No title or No description")
         else:
             # add mission in database
-            add_mission(title, description, categories)
+            add_mission_to_database(title, description, categories)
             print("add successfully")
     return render_template('addmission.html',ingenieur_id=ingenieur_id)
 
 # show Missions
 @app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
-def ingenieurEtudes(ingenieur_id):
+def ingenieur_etudes(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
                            ingenieur_id=ingenieur_id)
 
 # show Missions
 @app.route('/ingenieur_affaires/<ingenieur_id>',methods=['GET','POST'])
-def ingenieurAffaires(ingenieur_id):
+def ingenieur_affaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
@@ -106,14 +106,14 @@ def ingenieurAffaires(ingenieur_id):
                            missionsClosed=missionsClosed,
                            ingenieur_id=ingenieur_id)
 
-@app.route('/ingenieur_etudes/<id>/activite')
-def show_evolution_for_ingenieur(id):
-    activites = get_evolution_pour_ingenieur(id)
-    ingenieur = get_ingenieur_by_id(id)
+@app.route('/ingenieur_etudes/<ingenieur_id>/activite')
+def show_evolution_for_ingenieur(ingenieur_id):
+    activites = get_evolution_pour_ingenieur(ingenieur_id)
+    ingenieur = get_ingenieur_by_id(ingenieur_id)
     return render_template('ingenieur_evolution.html', activites=activites, ingenieur=ingenieur)
 
 @app.errorhandler(404)
-def notFound(e):
+def not_found(e):
     return render_template('404.html')
 
 

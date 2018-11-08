@@ -55,7 +55,7 @@ def get_ingenieur_by_id(id):
 
 ### ACTIONS
 
-def add_mission(title, description, categories):
+def add_mission_to_database(title, description, categories):
     new_mission = Mission()
     new_mission.title = title
     new_mission.description = description

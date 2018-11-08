@@ -21,11 +21,11 @@ class UnitTests(unittest.TestCase):
         self.pablo = create_account("pabloingles", "password3", "Pablo", IngenieurType.Etudes)
         self.admin = create_account("adminaccount", "password4", "Admin", IngenieurType.Affaires)
 
-        self.supermarket_mission = add_mission("go to carrefour", "it's a great supermarket", "courses")
-        self.jobsMission = add_mission("apply to jobs", "because I'm unemployed", "carriere")
-        add_mission("study for test", "", "devoirs")
-        add_mission("write cv", "", "devoirs, francais")
-        add_mission("language exchage", "", "francais, social")
+        self.supermarket_mission = add_mission_to_database("go to carrefour", "it's a great supermarket", "courses")
+        self.jobsMission = add_mission_to_database("apply to jobs", "because I'm unemployed", "carriere")
+        add_mission_to_database("study for test", "", "devoirs")
+        add_mission_to_database("write cv", "", "devoirs, francais")
+        add_mission_to_database("language exchage", "", "francais, social")
 
         positionner_pour_mission(self.jobsMission.id, self.josie.id, "just because")
         time.sleep(2)

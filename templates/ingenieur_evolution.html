@@ -14,7 +14,7 @@
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">{{ingenieur.name}}</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">{{ ingenieur.name }}</h1><br>
     </div>
 </header>
 {#<div class="container">#}
@@ -41,7 +41,7 @@
                     {% if activite.positionne %}
                         <td>Oui</td>
                         <td>{{ activity.date_positionne }}</td>
-                        <td>{{ activity.voeux  }}</td>
+                        <td>{{ activity.voeux }}</td>
                     {% else %}
                         <td>Non</td>
                         <td></td>
@@ -58,5 +58,6 @@
             {% endfor %}
             </tbody>
         </table>
+        <a href="{{ url_for("ingenieur_etudes", ingenieur_id = ingenieur.id) }}" class="btn btn-info"> Retourner </a>
     </div>
 </section>
