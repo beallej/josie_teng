@@ -121,7 +121,7 @@ class UnitTests(unittest.TestCase):
                     self.assertEqual(len(get_missions_affectes()), 2)
 
                 def test_clore_flow():
-                    clore_mission(self.supermarket_mission.id)
+                    clore_mission__from_db(self.supermarket_mission.id)
                     self.supermarket_mission = get_mission_by_id(self.supermarket_mission.id)
 
                     def test_clore_mission():

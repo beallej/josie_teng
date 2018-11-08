@@ -68,7 +68,7 @@ def affectuer(id):
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
 
-@app.route('/ingenieur_affaires/<ingenieur_id>', methods=['POST'])
+@app.route('/ingenieur_affaires/<ingenieur_id>/supprimer', methods=['POST'])
 def supprimer_mission(ingenieur_id):
     mission_id = request.form["mission_id"]
     supprimer_mission_from_db(mission_id)
@@ -78,10 +78,10 @@ def supprimer_mission(ingenieur_id):
                             ingenieur_aff=ingenieur_aff))
 
 
-@app.route('/ingenieur_affaires/<ingenieur_id>', methods=['POST'])
-def close_mission(ingenieur_id):
+@app.route('/ingenieur_affaires/<ingenieur_id>/clore', methods=['POST'])
+def clore_mission(ingenieur_id):
     mission_id = request.form["mission_id"]
-    clore_mission(mission_id)
+    clore_mission__from_db(mission_id)
     ingenieur_aff = get_ingenieur_affaires_by_id(ingenieur_id)
     ingenieurs = get_all_ingenieurs_etudes()
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_id, ingenieurs=ingenieurs,

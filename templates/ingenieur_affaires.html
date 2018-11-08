@@ -32,9 +32,9 @@
                 <th class="text-center">Date_saisie</th>
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Close</th>
+                <th class="text-center">Clore</th>
                 <th class="text-center">Supprimer</th>
-                <th class="text-center"></th>
+                <th class="text-center">Détail</th>
             </tr>
             </thead>
             <tbody>
@@ -47,21 +47,26 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    <form method="post" action="{{ url_for("close_mission", ingenieur_id=ingenieur_aff.id ) }}">
+
+                    <form method="post" action="{{ url_for("clore_mission", ingenieur_id=ingenieur_aff.id ) }}">
                         <td>
-                            <button class="btn btn-primary" type="submit">Close</button>
+                            <button class="btn btn-primary" type="submit">Clore</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
                     </form>
+
                     <form method="post" action="{{ url_for("supprimer_mission", ingenieur_id=ingenieur_aff.id ) }}">
                         <td>
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
-                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}" >
+                    </form>
+
+                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}">
                         <td>
                             <button class="btn btn-primary" type="submit">Détail</button>
                         </td>
+                        <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
                     </form>
                 </tr>
             {% endfor %}
@@ -85,9 +90,9 @@
                 <th class="text-center">Date_saisie</th>
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Close</th>
+                <th class="text-center">Clore</th>
                 <th class="text-center">Supprimer</th>
-                <th class="text-center"></th>
+                <th class="text-center">Détail</th>
             </tr>
             </thead>
             <tbody>
@@ -100,9 +105,9 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    <form method="post" action="{{ url_for("close_mission", ingenieur_id=ingenieur_aff.id ) }}">
+                    <form method="post" action="{{ url_for("clore_mission", ingenieur_id=ingenieur_aff.id ) }}">
                         <td>
-                            <button class="btn btn-primary" type="submit">Close</button>
+                            <button class="btn btn-primary" type="submit">Clore</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
                     </form>
@@ -111,10 +116,12 @@
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
-                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}" >
+                    </form>
+                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}">
                         <td>
                             <button class="btn btn-primary" type="submit">Détail</button>
                         </td>
+                        <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
                     </form>
                 </tr>
             {% endfor %}
@@ -137,7 +144,7 @@
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Supprimer</th>
-                <th class="text-center"></th>
+                <th class="text-center">Détail</th>
             </tr>
             </thead>
             <tbody>
@@ -155,10 +162,12 @@
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </td>
                         <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
-                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}" >
+                    </form>
+                    <form method="get" action="{{ url_for("voir_mission_detail", id=mission.id) }}">
                         <td>
                             <button class="btn btn-primary" type="submit">Détail</button>
                         </td>
+                        <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
                     </form>
                 </tr>
             {% endfor %}

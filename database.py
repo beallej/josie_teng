@@ -48,7 +48,7 @@ class Mission(db.Model):
         self.ingenieurs_affectue = affectuation
 
 
-    def cloire(self):
+    def clore(self):
         self.date_closed = datetime.datetime.utcnow()
         self.status = Status.CLOS
 

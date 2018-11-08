@@ -89,9 +89,10 @@ def add_mission_to_database(title, description, categories):
     db.session.commit()
     return new_mission
 
-def clore_mission(mission_id):
+def clore_mission__from_db(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
-    mission.cloire()
+    mission.clore()
+    db.session.merge(mission)
     db.session.commit()
 
 def supprimer_mission_from_db(mission_id):
