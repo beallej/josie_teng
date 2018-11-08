@@ -42,6 +42,12 @@ def index():
                 print("login defeat")
     return render_template('login.html')
 
+@app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
+def positionner(id):
+    mission_id = request.form["mission_id"]
+    voeux = request.form["reason"]
+    positionner_pour_mission(mission_id, id, voeux)
+    return show_missions(id)
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -92,8 +98,9 @@ def add_mission(ingenieur_id):
 @app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
 def ingenieur_etudes(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
+    ingenieur = get_ingenieur_by_id(id)
     return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
-                           ingenieur_id=ingenieur_id)
+                           ingenieur=ingenieur)
 
 # show Missions
 @app.route('/ingenieur_affaires/<ingenieur_id>',methods=['GET','POST'])
@@ -101,10 +108,11 @@ def ingenieur_affaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
+    ingenieur = get_ingenieur_by_id(ingenieur_id)
     return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
                            missionsClosed=missionsClosed,
-                           ingenieur_id=ingenieur_id)
+                           ingenieur=ingenieur)
 
 @app.route('/ingenieur_etudes/<ingenieur_id>/activite')
 def show_evolution_for_ingenieur(ingenieur_id):
