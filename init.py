@@ -29,24 +29,17 @@ def index():
                 print("type = " + type)
                 if ingenieur.type == "etudes" and type == "Etudes" :
                     print("Etude login success")
-                    missions = get_missions()
-                    url = url_for("showMissions", ingenieur_id=ingenieur.id)
-                    print(url)
-                    # redirect(url)
-                    # return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
-                    # flask.redirect(flask.url_for("show_missions"),ingenieur_id=ingenieur.id)
+                    url = url_for("ingenieurEtudes", ingenieur_id=ingenieur.id)
                     return redirect(url)
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
                     print("Affaire login success")
-                    missions = get_missions()
-                    # return render_template('showmissions.html', ingenieur=ingenieur, missions=missions)
-                    url_for("show_missions", ingenieur_id=ingenieur.id)
+                    url = url_for("ingenieurAffaires", ingenieur_id=ingenieur.id)
+                    return redirect(url)
                 else:
                     print("choisir la correct position svp")
             else:
                 print("login defeat")
-                # return render_template('login.html')
     return render_template('login.html')
 
 
@@ -87,24 +80,28 @@ def addMission(ingenieur_id):
         title = request.form["title"]
         description = request.form["description"]
         categories = request.form["categories"]
-        print(title)
-        print(categories)
-        if title == "" or description == "":
+        if title == "" or description == "" or categories == "":
             print("No title or No description")
-        # add mission in database
-        add_mission(title, description, categories)
-
-        print("add successfully")
+        else:
+            # add mission in database
+            add_mission(title, description, categories)
+            print("add successfully")
     return render_template('addmission.html',ingenieur_id=ingenieur_id)
 
 # show Missions
-@app.route('/showmissions/<ingenieur_id>',methods=['GET','POST'])
-def showMissions(ingenieur_id):
-    # missions = get_missions()
+@app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
+def ingenieurEtudes(ingenieur_id):
+    missionsAAffecter = get_missions_a_affecter()
+    return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
+                           ingenieur_id=ingenieur_id)
+
+# show Missions
+@app.route('/ingenieur_affaires/<ingenieur_id>',methods=['GET','POST'])
+def ingenieurAffaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
-    return render_template('showmissions.html', missionsAAffecter=missionsAAffecter,
+    return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
                            missionsClosed=missionsClosed,
                            ingenieur_id=ingenieur_id)
