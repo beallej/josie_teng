@@ -51,7 +51,7 @@
                 </select><br>
                 <button type="submit" class="btn btn-primary">Confirm</button>
                 <a href="register" class="btn btn-danger">Register</a>
-                % if error_message %}
+                {% if error_message %}
                     <div class="error_message"><p class="error_message">{{ error_message }}</p></div>
                 {% endif %}
             </form>
