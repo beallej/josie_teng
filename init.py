@@ -12,7 +12,7 @@ app.jinja_env.lstrip_blocks = True
 
 
 # Login
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     error_message = None
     if request.method == 'POST':

@@ -178,14 +178,26 @@
 <hr>
 <section class="bg-light text-center py-5">
     <h2>Ingenieur Etudes</h2>
-    <div class="container">
-        <ul>
+    <div class="container center-block" style="width:350px">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>
+                    Nom
+                </th>
+            </tr>
+            </thead>
+            <tbody>
             {% for ingenieur in ingenieurs %}
-                <li>{{ ingenieur.name }}
-                    <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id=ingenieur.id, return_type="AFFAIRE",affaire_id=ingenieur_aff.id) }}">Evolution
-                        d'activité</a></li>
+                <tr>
+                    <td>
+                        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id=ingenieur.id, return_type="AFFAIRE",affaire_id=ingenieur_aff.id) }}">{{ ingenieur.name }}</a>
+                        <br>
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
+            </tbody>
+        </table>
     </div>
 </section>
 <hr>
