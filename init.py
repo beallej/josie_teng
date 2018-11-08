@@ -42,6 +42,12 @@ def index():
                 print("login defeat")
     return render_template('login.html')
 
+@app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
+def positionner(id):
+    mission_id = request.form["mission_id"]
+    voeux = request.form["reason"]
+    positionner_pour_mission(mission_id, id, voeux)
+    return ingenieur_etudes(id)
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -75,6 +81,7 @@ def register():
 # add Mission
 @app.route('/ingenieur_affaires/<ingenieur_id>/addmission', methods=['GET', 'POST'])
 def add_mission(ingenieur_id):
+    ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
     if request.method == 'POST':
         # get data from html
         title = request.form["title"]
@@ -85,15 +92,17 @@ def add_mission(ingenieur_id):
         else:
             # add mission in database
             add_mission_to_database(title, description, categories)
+
             print("add successfully")
-    return render_template('addmission.html',ingenieur_id=ingenieur_id)
+    return render_template('addmission.html',ingenieur=ingenieur)
 
 # show Missions
 @app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
 def ingenieur_etudes(ingenieur_id):
-    missionsAAffecter = get_missions_a_affecter()
+    missionsAAffecter = get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_id)
+    ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
     return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
-                           ingenieur_id=ingenieur_id)
+                           ingenieur=ingenieur)
 
 # show Missions
 @app.route('/ingenieur_affaires/<ingenieur_id>',methods=['GET','POST'])
@@ -101,6 +110,7 @@ def ingenieur_affaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
+
     ingenieurs = get_all_ingenieurs_etudes()
     return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
@@ -108,10 +118,11 @@ def ingenieur_affaires(ingenieur_id):
                            ingenieur_id=ingenieur_id,
                            ingenieurs=ingenieurs)
 
+
 @app.route('/ingenieur_etudes/<ingenieur_id>/activite')
 def show_evolution_for_ingenieur(ingenieur_id):
     activites = get_evolution_pour_ingenieur(ingenieur_id)
-    ingenieur = get_ingenieur_by_id(ingenieur_id)
+    ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
     return render_template('ingenieur_evolution.html', activites=activites, ingenieur=ingenieur)
 
 @app.errorhandler(404)

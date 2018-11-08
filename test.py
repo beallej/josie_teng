@@ -134,7 +134,7 @@ class UnitTests(unittest.TestCase):
                         self.assertEqual(len(list(Positionnement.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
                         self.assertEqual(len(Categorie.query.filter_by(name="courses").first().missions), 0)
                         self.assertEqual(len(list(Action.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
-                        self.pablo = get_ingenieur_by_id(self.pablo.id)
+                        self.pablo = get_ingenieur_etudes_by_id(self.pablo.id)
                         self.assertEqual(len(self.pablo.missions_positionnes), 0)
                         self.assertEqual(len(self.pablo.missions_affectues), 0)
 

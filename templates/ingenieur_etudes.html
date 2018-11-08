@@ -14,11 +14,11 @@
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">Ingenieur Etudes</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Ingenieur d'Etudes</h1><br>
     </div>
 </header>
 <div class="container">
-    <h2>UserId: {{ ingenieur_id }}</h2>
+    <h2>Bonjour, {{ ingenieur.username }}</h2>
 </div>
 <section class="bg-light text-center py-5">
     <h2>Missions À Affecter</h2>
@@ -47,15 +47,22 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    <td><input name="reason" type="text" placeholder="Input the reason"></td>
-                    <td>
-                        <button class="btn btn-primary" type="submit">Apply to</button>
-                    </td>
+                    <form method="post" action="{{ url_for("positionner", id=ingenieur.id) }}" >
+                        <td><input name="reason" type="text" placeholder="Input the reason"></td>
+                        <td>
+                            <button class="btn btn-primary" type="submit">Positionner</button>
+                        </td>
+                        <input type="hidden" name="mission_id" value="{{ mission.id }}" />
+                    </form>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id = ingenieur_id, return_type="ETUDE") }}" class="btn btn-info mt-4">Evolution
+
+{#        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id = ingenieur_id, return_type="ETUDE") }}" class="btn btn-info mt-4">Evolution#}
+
+        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id = ingenieur.id) }}" class="btn btn-info mt-4">Evolution
+
             d'activité</a>
     </div>
 </section>

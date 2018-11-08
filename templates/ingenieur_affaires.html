@@ -18,7 +18,7 @@
     </div>
 </header>
 <div class="container">
-    <h2>UserId: {{ ingenieur_id }}</h2>
+    <h2>Bonjour, {{ ingenieur.username }}</h2>
 </div>
 <section class="bg-light text-center py-5">
     <h2>Missions À Affecter</h2>
@@ -45,11 +45,20 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
+
+                    <form method="post" action="{{ url_for("positionner", id=ingenieur.id) }}">
+                        <td><input name="reason" type="text" placeholder="Input the reason"></td>
+                        <td>
+                            <button class="btn btn-primary" type="submit">Positionner</button>
+                        </td>
+                        <input type="hidden" name="mission_id" value="{{ mission.id }}"/>
+                    </form>
+
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for("add_mission", ingenieur_id = ingenieur_id) }}" class="btn btn-danger mt-4">Add New
+        <a href="{{ url_for("add_mission", ingenieur_id = ingenieur.id) }}" class="btn btn-danger mt-4">Add New
             Mission</a>
     </div>
 </section>
@@ -128,7 +137,8 @@
         <ul>
             {% for ingenieur in ingenieurs %}
                 <li>{{ ingenieur.name }}
-                    <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id=ingenieur.id, return_type="AFFAIRE",affaire_id=ingenieur_id)}}">Evolution d'activité</a></li>
+                    <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id=ingenieur.id, return_type="AFFAIRE",affaire_id=ingenieur_id) }}">Evolution
+                        d'activité</a></li>
             {% endfor %}
         </ul>
     </div>
