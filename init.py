@@ -45,7 +45,7 @@ def index():
 
     return render_template('login.html', error_message=error_message)
 
-@app.route('/ingenieur_etudes/<id>/positionner', methods=['PUT'])
+@app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
 def positionner(id):
     mission_id = request.form["mission_id"]
     voeux = request.form["reason"]
