@@ -48,7 +48,7 @@ def index():
     return render_template('login.html', error_message=error_message)
 
 def set_cookies(ingenieur):
-    ingenieur_dict = {'id': ingenieur.id, 'name': ingenieur.name, 'type': ingenieur.type}
+    ingenieur_dict = {'id': ingenieur.id, 'name': ingenieur.name, 'type': ingenieur.type, 'username': ingenieur.username}
     session["ingenieur"] = ingenieur_dict
 
 @app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
@@ -177,7 +177,8 @@ def show_evolution_for_ingenieur(ingenieur_id):
     times_positionne = count_positionnements(activites)
     times_affectue = count_affectuations(activites)
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
-    return render_template('ingenieur_evolution.html', activites=activites, times_positionne=times_positionne, times_affectue=times_affectue, ingenieur=ingenieur)
+    ingenieur_logged_in = session["ingenieur"]
+    return render_template('ingenieur_evolution.html', activites=activites, times_positionne=times_positionne, times_affectue=times_affectue, ingenieur=ingenieur, ingenieur_logged_in=ingenieur_logged_in)
 
 
 @app.errorhandler(404)

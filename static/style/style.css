@@ -1,5 +1,7 @@
 .myheader {
      background: url(../img/header.png);
+    margin-top: 30px;
+    margin-bottom: 30px;
  }
 .categories {
     width: 350px;

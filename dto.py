@@ -28,6 +28,7 @@ class LoginResponse:
     def __init__(self, ingenieur):
         self.id = ingenieur.id
         self.name = ingenieur.name
+        self.username = ingenieur.username
         if isinstance(ingenieur, Ingenieur_Affaires):
             self.type = IngenieurType.Affaires.value
         else:
