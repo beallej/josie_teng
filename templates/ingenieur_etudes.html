@@ -25,7 +25,7 @@
     <h2>Missions À Affecter</h2>
     <form method="post" class="categories-form" action="{{ url_for("ingenieur_etudes", ingenieur_id=ingenieur.id) }}" >
         <label for="categories" class="col-2 control-label">Filter par categories: </label>
-        <input name="categories" class="categories" type="text" placeholder="ex. Java, Developpement mobile, etc...">
+        <input name="categories" class="categories" type="text" placeholder="ex. Java, iOS, etc...">
         <button class="btn btn-primary" type="submit">Filtrer</button>
      </form>
     <div class="container">
@@ -51,7 +51,7 @@
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
                     <form method="post" action="{{ url_for("positionner", id=ingenieur.id) }}" >
-                        <td><input name="reason" type="text" placeholder="Input the reason"></td>
+                        <td><input name="reason" type="text"></td>
                         <td>
                             <button class="btn btn-primary" type="submit">Positionner</button>
                         </td>
