@@ -51,8 +51,7 @@ def get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_etudes_id, c
     positionnements = Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id)
     missions_a_affecter = get_missions_a_affecter(categories)
     for positionnement in positionnements:
-        missions_a_affecter = filter(lambda mission: mission.id != positionnement.mission_id, missions_a_affecter)
-
+        missions_a_affecter = list(filter(lambda mission: mission.id != positionnement.mission_id, missions_a_affecter))
     return list(missions_a_affecter)
 
 
