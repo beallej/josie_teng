@@ -11,7 +11,7 @@ class MissionResponse:
         self.id = mission.id
         self.title = mission.title
         self.description = mission.description
-        self.categories = list(map(lambda categorie: categorie.name, mission.categories))
+        self.categories = list_to_csv(list(map(lambda categorie: categorie.name, mission.categories)))
         self.status = mission.status.value
         self.date_saisie = date_to_string(mission.date_saisie)
         self.date_closed = date_to_string(mission.date_closed)

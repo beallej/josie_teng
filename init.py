@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, flash, session, url_for, redi
 from service import *
 
 from service import *
+from utils import *
 
 app = Flask(__name__)
 app.secret_key = 'ytkey'
@@ -130,11 +131,17 @@ def add_mission(ingenieur_id):
 
 
 # show Missions
-@app.route('/ingenieur_etudes/<ingenieur_id>', methods=['GET', 'POST'])
+
+@app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET', 'POST'])
 def ingenieur_etudes(ingenieur_id):
-    missionsAAffecter = get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_id)
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
-    return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
+    categories_list = None
+    if request.method == 'POST':
+        categories_raw = request.form["categories"]
+        categories_list = csv_to_list(categories_raw.lower())
+    missions_a_affecter = get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_id, categories_list)
+
+    return render_template('ingenieur_etudes.html', missionsAAffecter=missions_a_affecter,
                            ingenieur=ingenieur)
 
 
