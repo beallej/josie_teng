@@ -13,7 +13,7 @@ app.jinja_env.lstrip_blocks = True
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def index():
-    error_message=None
+    error_message = None
     if request.method == 'POST':
         # get data from html
         username = request.form["username"]
@@ -24,11 +24,11 @@ def index():
             print("No username or No password")
             return render_template('login.html', wrongMsg=wrongMsg)
         else:
-            ingenieur = login(username,password)
-            if ingenieur != None :
+            ingenieur = login(username, password)
+            if ingenieur != None:
                 print("ingenieur.type = " + ingenieur.type)
                 print("type = " + type)
-                if ingenieur.type == "etudes" and type == "Etudes" :
+                if ingenieur.type == "etudes" and type == "Etudes":
                     print("Etude login success")
                     url = url_for("ingenieur_etudes", ingenieur_id=ingenieur.id)
                     return redirect(url)
@@ -45,12 +45,14 @@ def index():
 
     return render_template('login.html', error_message=error_message)
 
+
 @app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
 def positionner(id):
     mission_id = request.form["mission_id"]
     voeux = request.form["reason"]
     positionner_pour_mission(mission_id, id, voeux)
     return redirect(url_for('ingenieur_etudes', ingenieur_id=id))
+
 
 @app.route('/misson/<id>/affectuer', methods=['POST'])
 def affectuer(id):
@@ -59,18 +61,25 @@ def affectuer(id):
     affectuer_mission(id, ingenieur_etudes_id)
     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
-@app.route('/misson/<id>/delete', methods=['POST'])
-def suprimmer_mission(id):
-    supprimer_mission(id)
-    ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
-    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
 
-@app.route('/misson/<id>/close', methods=['POST'])
-def close_mission(id):
-    ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
-    clore_mission(id)
-    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
+@app.route('/ingenieur_affaires/<ingenieur_id>', methods=['POST'])
+def supprimer_mission(ingenieur_id):
+    mission_id = request.form["mission_id"]
+    supprimer_mission_from_db(mission_id)
+    ingenieur_aff = get_ingenieur_affaires_by_id(ingenieur_id)
+    ingenieurs = get_all_ingenieurs_etudes()
+    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_id, ingenieurs=ingenieurs,
+                            ingenieur_aff=ingenieur_aff))
 
+
+@app.route('/ingenieur_affaires/<ingenieur_id>', methods=['POST'])
+def close_mission(ingenieur_id):
+    mission_id = request.form["mission_id"]
+    clore_mission(mission_id)
+    ingenieur_aff = get_ingenieur_affaires_by_id(ingenieur_id)
+    ingenieurs = get_all_ingenieurs_etudes()
+    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_id, ingenieurs=ingenieurs,
+                            ingenieur_aff=ingenieur_aff))
 
 
 # Register
@@ -89,16 +98,15 @@ def register():
         elif password == password2:
             # if existe? same username
             try:
-                if type == "Etudes" :
+                if type == "Etudes":
                     ingenieur = create_account(username, password, name, IngenieurType.Etudes)
                     return redirect(url_for('ingenieur_etudes', ingenieur_id=ingenieur.id))
-                else: # "Affaire"
-                    ingenieur =create_account(username, password, name, IngenieurType.Affaires)
+                else:  # "Affaire"
+                    ingenieur = create_account(username, password, name, IngenieurType.Affaires)
                     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur.id))
             except Exception as inst:
                 print(inst.args)
                 error_message = inst.args[0]
-
 
     return render_template('Register.html', error_message=error_message)
 
@@ -118,25 +126,26 @@ def add_mission(ingenieur_id):
             # add mission in database
             add_mission_to_database(title, description, categories)
             print("add successfully")
-    return render_template('addmission.html',ingenieur=ingenieur)
+    return render_template('addmission.html', ingenieur=ingenieur)
+
 
 # show Missions
-@app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
+@app.route('/ingenieur_etudes/<ingenieur_id>', methods=['GET', 'POST'])
 def ingenieur_etudes(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter_pas_positionner_par_ingenieur(ingenieur_id)
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
     return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
                            ingenieur=ingenieur)
 
+
 # show Missions
-@app.route('/ingenieur_affaires/<ingenieur_id>',methods=['GET','POST'])
+@app.route('/ingenieur_affaires/<ingenieur_id>', methods=['GET', 'POST'])
 def ingenieur_affaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
     ingenieur_aff = get_ingenieur_affaires_by_id(ingenieur_id)
     ingenieurs = get_all_ingenieurs_etudes()
-    this_ingenieur = get_ingenieur_affaires_by_id(ingenieur_id)
     return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
                            missionsClosed=missionsClosed,
@@ -150,6 +159,7 @@ def show_evolution_for_ingenieur(ingenieur_id):
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
     return render_template('ingenieur_evolution.html', activites=activites, ingenieur=ingenieur)
 
+
 @app.errorhandler(404)
 def not_found(e):
     return render_template('404.html')
@@ -157,6 +167,7 @@ def not_found(e):
 
 if __name__ == "__main__":
     from database import db
+
     # print("creating database")
     # db.drop_all()
     db.create_all()

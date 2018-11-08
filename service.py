@@ -94,7 +94,7 @@ def clore_mission(mission_id):
     mission.cloire()
     db.session.commit()
 
-def supprimer_mission(mission_id):
+def supprimer_mission_from_db(mission_id):
     mission = Mission.query.filter_by(id=mission_id).first()
     positionnements = Positionnement.query.filter_by(mission_id=mission_id)
     for positionnement in positionnements:
@@ -102,14 +102,16 @@ def supprimer_mission(mission_id):
         ingenieur.missions_positionnes.remove(positionnement)
         db.session.merge(ingenieur)
     affectuation = Affectuation.query.filter_by(mission_id=mission_id).first()
-    ingenieur = affectuation.ingenieur
-    ingenieur.missions_affectues.remove(affectuation)
-    db.session.merge(ingenieur)
+    if affectuation != None:
+        ingenieur = affectuation.ingenieur
+        ingenieur.missions_affectues.remove(affectuation)
+        db.session.merge(ingenieur)
+        db.session.delete(affectuation)
+
     for categorie in mission.categories:
         categorie.missions.remove(mission)
         db.session.merge(categorie)
     map(db.session.delete, list(positionnements))
-    db.session.delete(affectuation)
     db.session.delete(mission)
     db.session.commit()
 

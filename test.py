@@ -129,7 +129,7 @@ class UnitTests(unittest.TestCase):
                         self.assertEqual(len(get_missions_a_affecter()), 3)
 
                     def test_supprimer_mission():
-                        supprimer_mission(self.supermarket_mission.id)
+                        supprimer_mission_from_db(self.supermarket_mission.id)
                         self.assertEqual(len(list(Affectuation.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
                         self.assertEqual(len(list(Positionnement.query.filter_by(mission_id=self.supermarket_mission.id))), 0)
                         self.assertEqual(len(Categorie.query.filter_by(name="courses").first().missions), 0)
