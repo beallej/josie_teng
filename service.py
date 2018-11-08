@@ -67,9 +67,17 @@ def get_ingenieur_etudes_by_id(id):
 def get_ingenieur_affaires_by_id(id):
     return Ingenieur_Affaires.query.filter_by(id=id).first()
 
+def get_ingenieur_by_id(id):
+    return get_ingenieur_affaires_by_id(id) or get_ingenieur_etudes_by_id(id)
+
 def get_all_ingenieurs_etudes():
     return Ingenieur_Etudes.query.all()
 
+def count_positionnements(activites):
+    return len(list(filter(lambda activity: activity.positionne, activites)))
+
+def count_affectuations(activites):
+    return len(list(filter(lambda activity: activity.affectue, activites)))
 
 ### ACTIONS
 
@@ -139,7 +147,7 @@ def create_account(username, password, name, type):
     db.session.add(account)
     try:
         db.session.commit()
-        return account
+        return LoginResponse(account)
     except Exception:
         db.session.rollback()
         raise Exception("Nom d'utilisateur pas disponible")

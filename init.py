@@ -21,9 +21,8 @@ def index():
         password = request.form["password"]
         type = request.form["type"]
         if username == "" or password == "":
-            wrongMsg = True
-            print("No username or No password")
-            return render_template('login.html', wrongMsg=wrongMsg)
+            error_message = "Nom d'utilisateur ou mot de passe incorrect"
+            return render_template('login.html', error_message=error_message)
         else:
             ingenieur = login(username, password)
             if ingenieur != None:
@@ -32,11 +31,13 @@ def index():
                 if ingenieur.type == "etudes" and type == "Etudes":
                     print("Etude login success")
                     url = url_for("ingenieur_etudes", ingenieur_id=ingenieur.id)
+                    set_cookies(ingenieur)
                     return redirect(url)
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
                     print("Affaire login success")
                     url = url_for("ingenieur_affaires", ingenieur_id=ingenieur.id)
+                    set_cookies(ingenieur)
                     return redirect(url)
                 else:
                     error_message = "Connexion impossible"
@@ -46,6 +47,9 @@ def index():
 
     return render_template('login.html', error_message=error_message)
 
+def set_cookies(ingenieur):
+    ingenieur_dict = {'id': ingenieur.id, 'name': ingenieur.name, 'type': ingenieur.type}
+    session["ingenieur"] = ingenieur_dict
 
 @app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
 def positionner(id):
@@ -58,7 +62,8 @@ def positionner(id):
 @app.route('/mission/<id>', methods=['GET'])
 def voir_mission_detail(id):
     mission = get_mission_by_id(id)
-    return render_template('mission.html', mission=mission)
+    ingenieur_logged_in = get_ingenieur_by_id(session["ingenieur"]["id"])
+    return render_template('mission.html', mission=mission, ingenieur=ingenieur_logged_in)
 
 @app.route('/mission/<id>/affectuer', methods=['POST'])
 def affectuer(id):
@@ -102,13 +107,14 @@ def register():
         if username == "" or password == "" or password2 == "" or name == "":
             print("No username or No password or No confirmpassword or name")
         elif password == password2:
-            # if existe? same username
             try:
                 if type == "Etudes":
                     ingenieur = create_account(username, password, name, IngenieurType.Etudes)
+                    set_cookies(ingenieur)
                     return redirect(url_for('ingenieur_etudes', ingenieur_id=ingenieur.id))
                 else:  # "Affaire"
                     ingenieur = create_account(username, password, name, IngenieurType.Affaires)
+                    set_cookies(ingenieur)
                     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur.id))
             except Exception as inst:
                 print(inst.args)
@@ -168,8 +174,10 @@ def ingenieur_affaires(ingenieur_id):
 @app.route('/ingenieur_etudes/<ingenieur_id>/activites')
 def show_evolution_for_ingenieur(ingenieur_id):
     activites = get_evolution_pour_ingenieur(ingenieur_id)
+    times_positionne = count_positionnements(activites)
+    times_affectue = count_affectuations(activites)
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)
-    return render_template('ingenieur_evolution.html', activites=activites, ingenieur=ingenieur)
+    return render_template('ingenieur_evolution.html', activites=activites, times_positionne=times_positionne, times_affectue=times_affectue, ingenieur=ingenieur)
 
 
 @app.errorhandler(404)
