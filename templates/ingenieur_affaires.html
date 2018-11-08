@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style/style.css"/>
-    <title>Ingenieur Affaires</title>
+    <title>Ingenieur d'Affaires</title>
 </head>
 <body>
 <header>
@@ -25,12 +25,11 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Title</th>
+                <th class="text-center">Titre</th>
                 <th class="text-center">Description</th>
                 <th class="text-center">Categories</th>
-                <th class="text-center">Date_saisie</th>
-                <th class="text-center">Date_closed</th>
+                <th class="text-center">Date Saisie</th>
+                <th class="text-center">Date Close</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Clore</th>
                 <th class="text-center">Supprimer</th>
@@ -40,7 +39,6 @@
             <tbody>
             {% for mission in missionsAAffecter %}
                 <tr>
-                    <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
                     <td>{{ mission.description }}</td>
                     <td>{{ mission.categories }}</td>
@@ -72,23 +70,22 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for("add_mission", ingenieur_id = ingenieur_aff.id) }}" class="btn btn-danger mt-4">Add New
+        <a href="{{ url_for("add_mission", ingenieur_id = ingenieur_aff.id) }}" class="btn btn-danger mt-4">Ajouter une
             Mission</a>
     </div>
 </section>
 <hr>
 <section class="bg-light text-center py-5">
-    <h2>Missions Affectée</h2>
+    <h2>Missions Affectées</h2>
     <div class="container">
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Title</th>
+                <th class="text-center">Titre</th>
                 <th class="text-center">Description</th>
                 <th class="text-center">Categories</th>
-                <th class="text-center">Date_saisie</th>
-                <th class="text-center">Date_closed</th>
+                <th class="text-center">Date Saisie</th>
+                <th class="text-center">Date Close</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Clore</th>
                 <th class="text-center">Supprimer</th>
@@ -98,7 +95,6 @@
             <tbody>
             {% for mission in missionsAffectes %}
                 <tr>
-                    <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
                     <td>{{ mission.description }}</td>
                     <td>{{ mission.categories }}</td>
@@ -131,17 +127,16 @@
 </section>
 <hr>
 <section class="bg-light text-center py-5">
-    <h2>Missions Closed</h2>
+    <h2>Missions Closes</h2>
     <div class="container">
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Title</th>
+                <th class="text-center">Titre</th>
                 <th class="text-center">Description</th>
                 <th class="text-center">Categories</th>
-                <th class="text-center">Date_saisie</th>
-                <th class="text-center">Date_closed</th>
+                <th class="text-center">Date Saisie</th>
+                <th class="text-center">Date Close</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Supprimer</th>
                 <th class="text-center">Détail</th>
@@ -150,7 +145,6 @@
             <tbody>
             {% for mission in missionsClosed %}
                 <tr>
-                    <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
                     <td>{{ mission.description }}</td>
                     <td>{{ mission.categories }}</td>
