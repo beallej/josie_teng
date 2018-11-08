@@ -70,6 +70,7 @@ def get_ingenieur_affaires_by_id(id):
 def get_all_ingenieurs_etudes():
     return Ingenieur_Etudes.query.all()
 
+
 ### ACTIONS
 
 def add_mission_to_database(title, description, categories):

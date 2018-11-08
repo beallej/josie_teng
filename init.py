@@ -13,6 +13,7 @@ app.jinja_env.lstrip_blocks = True
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def index():
+    error_message=None
     if request.method == 'POST':
         # get data from html
         username = request.form["username"]
@@ -37,10 +38,12 @@ def index():
                     url = url_for("ingenieur_affaires", ingenieur_id=ingenieur.id)
                     return redirect(url)
                 else:
+                    error_message = "Connexion impossible"
                     print("choisir la correct position svp")
             else:
-                print("login defeat")
-    return render_template('login.html')
+                error_message = "Nom d'utilisateur ou mot de passe incorrect"
+
+    return render_template('login.html', error_message=error_message)
 
 @app.route('/ingenieur_etudes/<id>/positionner', methods=['PUT'])
 def positionner(id):
