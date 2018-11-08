@@ -47,7 +47,8 @@ def positionner(id):
     mission_id = request.form["mission_id"]
     voeux = request.form["reason"]
     positionner_pour_mission(mission_id, id, voeux)
-    return ingenieur_etudes(id)
+    return redirect(url_for('ingenieur_etudes', ingenieur_id=id))
+
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
