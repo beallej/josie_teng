@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style/style.css"/>
-    <title>Ingenieur Etudes</title>
+    <title>Ingenieur d'Études</title>
 </head>
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">Ingenieur d'Etudes</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Ingenieur d'Études</h1><br>
     </div>
 </header>
 <div class="container">
@@ -31,21 +31,18 @@
         <table class="table table-hover table-bordered">
             <thead>
             <tr>
-                <th class="text-center">ID</th>
                 <th class="text-center">Title</th>
                 <th class="text-center">Description</th>
                 <th class="text-center">Categories</th>
-                <th class="text-center">Date_saisie</th>
-                <th class="text-center">Date_closed</th>
+                <th class="text-center">Date Saisie</th>
+                <th class="text-center">Date Close</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Reason</th>
-                <th class="text-center">Wish</th>
+                <th class="text-center">Voeux</th>
             </tr>
             </thead>
             <tbody>
             {% for mission in missionsAAffecter %}
                 <tr>
-                    <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
                     <td>{{ mission.description }}</td>
                     <td>{{ mission.categories }}</td>

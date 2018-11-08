@@ -7,33 +7,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style/style.css"/>
-    <title>Add missions</title>
+    <title>Ajouter des missions</title>
 </head>
 
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">Add new missions</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Ajouter des missions</h1><br>
     </div>
 </header>
 <main>
     <section class="text-center py-5">
         <div class="container">
-            <h2 class="display-5 mb-3">New Mission</h2>
+            <h2 class="display-5 mb-3">Nouvelle mission</h2>
             <form method="post">
                 <div class="form-group row">
-                    <label for="title" class="control-label col-5">Mission Title</label>
-                    <input name="title" type="text" class="form-control col-7" placeholder="Enter title">
+                    <label for="title" class="control-label col-5">Titre de la mission</label>
+                    <input name="title" type="text" class="form-control col-7" placeholder="titre">
                 </div>
                 <div class="form-group row">
-                    <label for="description" class="control-label col-5">Mission Description</label>
-                    <input name="description" type="text" class="form-control col-7" placeholder="Enter description">
+                    <label for="description" class="control-label col-5">Description de la mission</label>
+                    <input name="description" type="text" class="form-control col-7" placeholder="description">
                 </div>
                 <div class="form-group row">
-                    <label for="categories" class="control-label col-5">Mission Categories</label>
-                    <input name="categories" type="text" class="form-control col-7" placeholder="Enter categories">
+                    <label for="categories" class="control-label col-5">Categories, separé par virgule </label>
+                    <input name="categories" type="text" class="form-control col-7" placeholder="ex. iOS Developpement, Full-stack, etc..">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
                 <a href="{{ url_for("ingenieur_affaires", ingenieur_id = ingenieur.id) }}" class="btn btn-info"> Retourner </a>
             </form>
         </div>

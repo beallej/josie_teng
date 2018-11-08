@@ -9,19 +9,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style/style.css"/>
-    <title>Title</title>
+    <title>Titre</title>
 </head>
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">Mission System</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Système de Missions</h1><br>
     </div>
 </header>
 
 <main>
     <section class="py-5">
         <div class="container text-center">
-            <h2 class="display-5 mb-3">Login</h2><br>
+            <h2 class="display-5 mb-3">S'identifier</h2><br>
             {% if error_message != None %}
                 <div class="alert alert-danger" role="alert">
                     <a class="close" data-dismiss="alert">×</a>
@@ -31,26 +31,26 @@
             <form class="form-horizontal" method="post" role="form">
                 <div class="form-group row">
                     <div class="col-4"></div>
-                    <label class="control-label col-2" for="username">User Name: </label>
+                    <label class="control-label col-2" for="username">Nom d'Utilisateur: </label>
                     <div class="col-4">
-                        <input class="form-control" name="username" type="text" placeholder="username">
+                        <input class="form-control" name="username" type="text">
                     </div>
                     <div class="col-2"></div>
                 </div>
                 <div class="form-group row">
                     <div class="col-4"></div>
-                    <label for="password" class="col-2 control-label">Password: </label>
+                    <label for="password" class="col-2 control-label">Mot de Passe: </label>
                     <div class="col-4">
-                        <input class="form-control" name="password" type="text" placeholder="password">
+                        <input class="form-control" name="password" type="text">
                     </div>
                     <div class="col-2"></div>
                 </div>
                 <select class="mb-3" name="type">
-                    <option>Etudes</option>
-                    <option>Affaires</option>
+                    <option value="Etudes">Ingenieur d'Études</option>
+                    <option value="Affaires">Ingenieur d'Affaires</option>
                 </select><br>
-                <button type="submit" class="btn btn-primary">Confirm</button>
-                <a href="register" class="btn btn-danger">Register</a>
+                <button type="submit" class="btn btn-primary">S'identifier</button>
+                <a href="register" class="btn btn-danger">S'inscrire</a>
             </form>
         </div>
     </section>
