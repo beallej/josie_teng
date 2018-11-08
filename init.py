@@ -120,7 +120,7 @@ def ingenieur_affaires(ingenieur_id):
                            ingenieurs=ingenieurs)
 
 
-@app.route('/ingenieur_etudes/<ingenieur_id>/activite')
+@app.route('/ingenieur_etudes/<ingenieur_id>/activites')
 def show_evolution_for_ingenieur(ingenieur_id):
     activites = get_evolution_pour_ingenieur(ingenieur_id)
     ingenieur = get_ingenieur_etudes_by_id(ingenieur_id)

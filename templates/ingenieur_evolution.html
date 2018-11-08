@@ -35,13 +35,13 @@
             </tr>
             </thead>
             <tbody>
-            {% for activity in activities %}
+            {% for activite in activites %}
                 <tr>
-                    <td>{{ activity.mission.title }}</td>
+                    <td>{{ activite.mission.title }}</td>
                     {% if activite.positionne %}
                         <td>Oui</td>
-                        <td>{{ activity.date_positionne }}</td>
-                        <td>{{ activity.voeux }}</td>
+                        <td>{{ activite.date_positionne }}</td>
+                        <td>{{ activite.voeux }}</td>
                     {% else %}
                         <td>Non</td>
                         <td></td>
@@ -49,7 +49,7 @@
                     {% endif %}
                     {% if activite.affectue %}
                         <td>Oui</td>
-                        <td>{{ activity.date_affectue }}</td>
+                        <td>{{ activite.date_affectue }}</td>
                     {% else %}
                         <td>Non</td>
                         <td></td>
