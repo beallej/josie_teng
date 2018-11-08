@@ -55,7 +55,12 @@ def positionner(id):
     return redirect(url_for('ingenieur_etudes', ingenieur_id=id))
 
 
-@app.route('/misson/<id>/affectuer', methods=['POST'])
+@app.route('/mission/<id>', methods=['GET'])
+def voir_mission_detail(id):
+    mission = get_mission_by_id(id)
+    return render_template('mission.html', mission=mission)
+
+@app.route('/mission/<id>/affectuer', methods=['POST'])
 def affectuer(id):
     ingenieur_etudes_id = request.form["ingenieur_etudes_id"]
     ingenieur_affaires_id = request.form["ingenieur_affairs_id"]

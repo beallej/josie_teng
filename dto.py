@@ -47,7 +47,7 @@ class ActionResponse:
         self.date_positionne = None
         self.voeux = None
         self.ingenieur_etudes_id = action.ingenieur_etudes_id
-        self.ingenieur_etudes_name = Ingenieur_Etudes.query.filter_by(id=self.ingenieur_etudes_id)
+        self.ingenieur_etudes_name = Ingenieur_Etudes.query.filter_by(id=self.ingenieur_etudes_id).first().name
 
 class PositionnementResponse(ActionResponse):
 
