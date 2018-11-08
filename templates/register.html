@@ -61,7 +61,9 @@
                 <button type="submit" class="btn btn-primary">Confirm</button>
                 <a href="login" class="btn btn-danger"> Login </a>
             </form>
-
+            {% if error_message %}
+                <div class="error_message"><p class="error_message">{{ error_message }}</p></div>
+            {% endif %}
         </div>
     </section>
 </main>

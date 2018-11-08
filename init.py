@@ -42,17 +42,37 @@ def index():
                 print("login defeat")
     return render_template('login.html')
 
-@app.route('/ingenieur_etudes/<id>/positionner', methods=['POST'])
+@app.route('/ingenieur_etudes/<id>/positionner', methods=['PUT'])
 def positionner(id):
     mission_id = request.form["mission_id"]
     voeux = request.form["reason"]
     positionner_pour_mission(mission_id, id, voeux)
     return redirect(url_for('ingenieur_etudes', ingenieur_id=id))
 
+@app.route('/misson/<id>/affectuer', methods=['PUT'])
+def affectuer(id):
+    ingenieur_etudes_id = request.form["ingenieur_etudes_id"]
+    ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
+    affectuer_mission(id, ingenieur_etudes_id)
+    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
+
+@app.route('/misson/<id>/delete', methods=['DELETE'])
+def suprimmer_mission(id):
+    supprimer_mission(id)
+    ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
+    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
+
+@app.route('/misson/<id>/close', methods=['PUT'])
+def close_mission(id):
+    ingenieur_affaires_id = request.form["ingenieur_affairs_id"]
+    clore_mission(id)
+    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur_affaires_id))
+
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    error_message = None
     if request.method == 'POST':
         # get data from html
         username = request.form["username"]
@@ -66,17 +86,17 @@ def register():
             # if existe? same username
             try:
                 if type == "Etudes" :
-                    create_account(username, password, name, IngenieurType.Etudes)
-                    print("create account etude successful")
+                    ingenieur = create_account(username, password, name, IngenieurType.Etudes)
+                    return redirect(url_for('ingenieur_etudes', ingenieur_id=ingenieur.id))
                 else: # "Affaire"
-                    create_account(username, password, name, IngenieurType.Affaires)
-                    print("create account affaire successful")
+                    ingenieur =create_account(username, password, name, IngenieurType.Affaires)
+                    return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur.id))
             except Exception as inst:
                 print(inst.args)
-                ##TODO DISPLAY EXCEPTION
+                error_message = inst.args[0]
 
 
-    return render_template('Register.html')
+    return render_template('Register.html', error_message=error_message)
 
 
 # add Mission
@@ -113,10 +133,11 @@ def ingenieur_affaires(ingenieur_id):
     missionsClosed = get_missions_closes()
 
     ingenieurs = get_all_ingenieurs_etudes()
+    this_ingenieur = get_ingenieur_affaires_by_id(ingenieur_id)
     return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
                            missionsClosed=missionsClosed,
-                           ingenieur_id=ingenieur_id,
+                           ingenieur=this_ingenieur,
                            ingenieurs=ingenieurs)
 
 
