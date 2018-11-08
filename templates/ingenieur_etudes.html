@@ -22,6 +22,11 @@
 </div>
 <section class="bg-light text-center py-5">
     <h2>Missions À Affecter</h2>
+    <form method="post" class="categories-form" action="{{ url_for("ingenieur_etudes", ingenieur_id=ingenieur.id) }}" >
+        <label for="categories" class="col-2 control-label">Filter par categories: </label>
+        <input name="categories" class="categories" type="text" placeholder="ex. Java, Developpement mobile, etc...">
+        <button class="btn btn-primary" type="submit">Filtrer</button>
+     </form>
     <div class="container">
         <table class="table table-hover table-bordered">
             <thead>

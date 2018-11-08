@@ -1,3 +1,9 @@
 .myheader {
      background: url(../img/header.png);
  }
+.categories {
+    width: 350px;
+}
+.categories-form {
+    margin-bottom: 20px;
+}

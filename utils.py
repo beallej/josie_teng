@@ -6,8 +6,12 @@ def encrypt_password(plaintext):
     hash_function.update(plaintext_encoded)
     hashed_password = hash_function.hexdigest()
     return hashed_password
+
 def csv_to_list(string):
     return list(map(lambda s: s.strip(), string.split(',')))
+
+def list_to_csv(list):
+    return ", ".join(list)
 
 def date_to_string(date):
     return None if date is None else date.astimezone().strftime(
