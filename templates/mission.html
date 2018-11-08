@@ -27,7 +27,7 @@
                 <th class="text-center">Ingenieur</th>
                 <th class="text-center">Voeux</th>
                 <th class="text-center">Date Positionné</th>
-                {% if mission.status == "A_AFFECTER" %}
+                {% if mission.status == "À Affecter" %}
                     <th class="text-center">Affecter</th>
                 {% endif %}
             </tr>
@@ -38,7 +38,7 @@
                     <td>{{ positionnement.ingenieur_etudes_name }}</td>
                     <td>{{ positionnement.voeux }}</td>
                     <td>{{ positionnement.date_positionne }}</td>
-                    {% if mission.status == "A_AFFECTER" %}
+                    {% if mission.status == "À Affecter" %}
                         <form method="post" action="{{ url_for("affectuer_mission", id=mission.id) }}">
                             <td>
                                 <button class="btn btn-danger" type="submit">Affecter</button>
