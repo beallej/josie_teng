@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, flash, session
+import flask
+from flask import Flask, request, render_template, flash, session, url_for, redirect
 from service import *
 
 from service import *
@@ -16,6 +17,7 @@ def index():
         # get data from html
         username = request.form["username"]
         password = request.form["password"]
+        type = request.form["type"]
         if username == "" or password == "":
             wrongMsg = True
             print("No username or No password")
@@ -23,13 +25,26 @@ def index():
         else:
             ingenieur = login(username,password)
             if ingenieur != None :
-                print("login success")
-                missions = get_missions()
-                return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
+                print("ingenieur.type = " + ingenieur.type)
+                print("type = " + type)
+                if ingenieur.type == "etudes" and type == "Etudes" :
+                    print("Etude login success")
+                    missions = get_missions()
+                    # print(url_for("show_missions",ingenieur_id=ingenieur.id))
+                    # url=url_for("show_missions",ingenieur_id=ingenieur.id)
+                    # redirect(url)
+                    # return render_template('showmissions.html',ingenieur=ingenieur,missions=missions)
+                    # flask.redirect(flask.url_for("show_missions"),ingenieur_id=ingenieur.id)
+                    return flask.redirect(flask.url_for("show_missions"),ingenieur_id=ingenieur.id)
 
-
+                elif ingenieur.type == "affaires" and type == "Affaires":
+                    print("Affaire login success")
+                    missions = get_missions()
+                    # return render_template('showmissions.html', ingenieur=ingenieur, missions=missions)
+                    url_for("show_missions", ingenieur_id=ingenieur.id)
+                else:
+                    print("choisir la correct position svp")
             else:
-                # flash("login defeat")
                 print("login defeat")
                 # return render_template('login.html')
     return render_template('login.html')
@@ -49,9 +64,8 @@ def register():
             print("No username or No password or No confirmpassword or name")
         elif password == password2:
             # if existe? same username
-
             try:
-                if type == "Etude" :
+                if type == "Etudes" :
                     create_account(username, password, name, IngenieurType.Etudes)
                     print("create account etude successful")
                 else: # "Affaire"
@@ -78,7 +92,6 @@ def add():
         if title == "" or description == "":
             print("No title or No description")
         # add mission in database
-
         add_mission(title, description, categories)
 
         print("add successfully")
@@ -88,10 +101,10 @@ def add():
 
 # show Missions
 
-@app.route('/showmissions',methods=['GET','POST'])
-def show_missions():
+@app.route('/showmissions/<ingenieur_id>',methods=['GET','POST'])
+def show_missions(ingenieur_id):
     missions = get_missions()
-    return render_template('showmissions.html', missions=missions)
+    return render_template('showmissions.html', missions=missions,ingenieur_id=ingenieur_id)
 
 
 @app.errorhandler(404)
@@ -102,7 +115,7 @@ def not_found(e):
 if __name__ == "__main__":
     from database import db
     # print("creating database")
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
     # from test import *
     #

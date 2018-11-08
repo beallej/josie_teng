@@ -6,8 +6,6 @@ def encrypt_password(plaintext):
     hash_function.update(plaintext_encoded)
     hashed_password = hash_function.hexdigest()
     return hashed_password
-
-
 def csv_to_list(string):
     return list(map(lambda s: s.strip(), string.split(',')))
 
