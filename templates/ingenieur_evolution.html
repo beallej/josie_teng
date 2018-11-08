@@ -17,9 +17,9 @@
         <h1 class="font-weight-normal display-3 mb-3">{{ ingenieur.name }}</h1><br>
     </div>
 </header>
-{#<div class="container">#}
-{#    <h2>Ingenieur: {{ ingenieur.name }}</h2>#}
-{#</div>#}
+<div class="container">
+    <h2>Bonjour, {{ ingenieur_logged_in["username"] }}</h2>
+</div>
 <section class="bg-light text-center py-5">
     <h2>Activités</h2>
     <div class="container">
@@ -60,14 +60,12 @@
         </table>
         <div><h4>No. de fois positionné: {{ times_positionne }}</h4></div>
         <div><h4>No. de fois affectué: {{ times_affectue }}</h4></div>
-    {% print(return_type) %}
-{#        {% if return_type =="AFFAIRE" %}#}
-{#            <a href="{{ url_for("ingenieur_affaires", ingenieur_id = affaire_id) }}" class="btn btn-info">#}
-{#                Retourner </a>#}
-{#        {% endif %}#}
-{#        {% if return_type =="ETUDE" %}#}
-            <a href="{{ url_for("ingenieur_etudes", ingenieur_id = ingenieur.id) }}" class="btn btn-info">
+        {% if ingenieur_logged_in["type"] ==  "affaires" %}
+           <a href="{{ url_for("ingenieur_affaires", ingenieur_id = ingenieur_logged_in["id"]) }}" class="btn btn-info">
                 Retourner </a>
-{#        {% endif %}#}
+        {% elif ingenieur_logged_in["type"] ==  "etudes" %}
+            <a href="{{ url_for("ingenieur_etudes", ingenieur_id = ingenieur_logged_in["id"]) }}" class="btn btn-info">
+                Retourner </a>
+       {% endif %}
     </div>
 </section>
