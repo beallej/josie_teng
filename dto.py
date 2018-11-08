@@ -51,10 +51,33 @@ class LoginResponse:
             self.type = IngenieurType.Etudes.value
 
 
+
+
 class ActionResponse:
+
     def __init__(self, action):
-        self.date = date_to_string(action.date)
-        self.description = format_action_desc(action)
+        self.mission = Mission.query.filter_by(id=action.mission_id).first()
+        self.affectue = False
+        self.positionne = False
+        self.sort_date = action.date
+        self.date_affectue = None
+        self.date_positionne = None
+        self.voeux = None
+
+class PositionnementResponse(ActionResponse):
+
+    def __init__(self, positionnement):
+        super(PositionnementResponse, self).__init__(positionnement)
+        self.positionne = True
+        self.voeux = positionnement.voeux
+        self.date_positionne = date_to_string(positionnement.date)
+
+class AffectuationResponse(ActionResponse):
+
+    def __init__(self, affectuation):
+        super(AffectuationResponse, self).__init__(affectuation)
+        self.affectue = True
+        self.date_affectue = date_to_string(affectuation.date)
 
 
 def format_action_desc(action):
@@ -62,17 +85,3 @@ def format_action_desc(action):
     mission = Mission.query.filter_by(id=action.mission_id).first()
     date = date_to_string(action.date)
 
-    def format_positionnement_desc(positionnemnt):
-        return "{ingenieur} a positionné pour mission {mission_titre} avec les souhaits {voeux} à {date}.".format(
-            ingenieur=ingenieur.name, mission_titre=mission.title, voeux=positionnemnt.voeux,
-            date=date)
-
-    def format_affectuation_desc():
-        return "{ingenieur} a été affectué la mission {mission_titre} à {date}.".format(ingenieur=ingenieur.name,
-                                                                                        mission_titre=mission.title,
-                                                                                        date=date)
-
-    if isinstance(action, Positionnement):
-        return format_positionnement_desc(action)
-    else:
-        return format_affectuation_desc()

@@ -19,10 +19,19 @@ def get_voeux_pour_mission(mission_id):
     return voeux
 
 def get_evolution_pour_ingenieur(ingenieur_etudes_id):
-    actions = list(Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
-    actions.extend(Affectuation.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id))
-    actions.sort(key=lambda action1: action1.date)
-    return list(map(ActionResponse, actions))
+    positionnement_actions = list(map(PositionnementResponse, Positionnement.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id)))
+    actions = {positionnement.mission.id : positionnement for positionnement in positionnement_actions}
+    affectuations = list(map(AffectuationResponse, Affectuation.query.filter_by(ingenieur_etudes_id=ingenieur_etudes_id)))
+    for affectuation in affectuations:
+        corresponding_positionnement = actions[affectuation.mission.id]
+        if corresponding_positionnement is None:
+            actions[affectuation.mission.id] = affectuation
+        else:
+            corresponding_positionnement.affectue = True
+            corresponding_positionnement.date_affectue = affectuation.date_affectue
+    action_list = list(actions.values())
+    action_list.sort(key=lambda action: action.sort_date)
+    return action_list
 
 def get_missions_a_affecter(categories=None):
     if categories is None:
@@ -124,6 +133,7 @@ def login(username, password):
     if ingenieur is None:
         return None
     return LoginResponse(ingenieur)
+
 
 
 
