@@ -34,7 +34,7 @@ def index():
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
                     print("Affaire login success")
-                    url = url_for("ingenieu_affaires", ingenieur_id=ingenieur.id)
+                    url = url_for("ingenieur_affaires", ingenieur_id=ingenieur.id)
                     return redirect(url)
                 else:
                     print("choisir la correct position svp")
@@ -73,7 +73,7 @@ def register():
 
 
 # add Mission
-@app.route('/showmissions/<ingenieur_id>/addmission', methods=['GET', 'POST'])
+@app.route('/ingenieur_affaires/<ingenieur_id>/addmission', methods=['GET', 'POST'])
 def add_mission(ingenieur_id):
     if request.method == 'POST':
         # get data from html
@@ -101,10 +101,12 @@ def ingenieur_affaires(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
     missionsAffectes = get_missions_affectes()
     missionsClosed = get_missions_closes()
+    ingenieurs = get_all_ingenieurs_etudes()
     return render_template('ingenieur_affaires.html', missionsAAffecter=missionsAAffecter,
                            missionsAffectes=missionsAffectes,
                            missionsClosed=missionsClosed,
-                           ingenieur_id=ingenieur_id)
+                           ingenieur_id=ingenieur_id,
+                           ingenieurs=ingenieurs)
 
 @app.route('/ingenieur_etudes/<ingenieur_id>/activite')
 def show_evolution_for_ingenieur(ingenieur_id):

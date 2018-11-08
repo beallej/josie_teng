@@ -33,8 +33,6 @@
                 <th class="text-center">Date_saisie</th>
                 <th class="text-center">Date_closed</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Reason</th>
-                <th class="text-center">Wish</th>
             </tr>
             </thead>
             <tbody>
@@ -47,10 +45,6 @@
                     <td>{{ mission.date_saisie }}</td>
                     <td>{{ mission.date_closed }}</td>
                     <td>{{ mission.status }}</td>
-                    <td><input name="reason" type="text" placeholder="Input the reason"></td>
-                    <td>
-                        <button class="btn btn-primary" type="submit">Apply to</button>
-                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -125,6 +119,18 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
+</section>
+<hr>
+<section class="bg-light text-center py-5">
+    <h2>Ingenieur Etudes</h2>
+    <div class="container">
+        <ul>
+            {% for ingenieur in ingenieurs %}
+                <li>{{ ingenieur.name }}
+                    <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id=ingenieur.id, return_type="AFFAIRE",affaire_id=ingenieur_id)}}">Evolution d'activité</a></li>
+            {% endfor %}
+        </ul>
     </div>
 </section>
 <hr>

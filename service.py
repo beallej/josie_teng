@@ -1,5 +1,6 @@
-from dto import *
 from database import *
+from dto import *
+
 
 def get_missions(status=None):
     if status == None :
@@ -50,7 +51,8 @@ def get_mission_by_id(id):
 def get_ingenieur_by_id(id):
     return Ingenieur_Etudes.query.filter_by(id=id).first()
 
-
+def get_all_ingenieurs_etudes():
+    return Ingenieur_Etudes.query.all()
 
 
 ### ACTIONS
