@@ -1,3 +1,8 @@
 .myheader {
      background: url(../img/header.png);
  }
+
+.error_message {
+    margin-top: 8px;
+    color: red;
+}
