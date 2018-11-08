@@ -20,6 +20,12 @@
     <section class="py-5">
         <div class="container text-center">
             <h2 class="display-5 mb-3">Register</h2><br>
+            {% if error_message != None %}
+                <div class="alert alert-danger" role="alert">
+                    <a class="close" data-dismiss="alert">×</a>
+                    {{error_message}}
+                </div>
+            {% endif %}
 
             <form class="form-horizontal" method="post" role="form">
                 <div class="form-group row">
@@ -61,9 +67,6 @@
                 <button type="submit" class="btn btn-primary">Confirm</button>
                 <a href="login" class="btn btn-danger"> Login </a>
             </form>
-            {% if error_message %}
-                <div class="error_message"><p class="error_message">{{ error_message }}</p></div>
-            {% endif %}
         </div>
     </section>
 </main>

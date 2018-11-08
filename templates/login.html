@@ -22,10 +22,10 @@
     <section class="py-5">
         <div class="container text-center">
             <h2 class="display-5 mb-3">Login</h2><br>
-            {% if wrongMsg == True %}
+            {% if error_message != None %}
                 <div class="alert alert-danger" role="alert">
                     <a class="close" data-dismiss="alert">×</a>
-                    Username and Password is wrong!
+                    {{error_message}}
                 </div>
             {% endif %}
             <form class="form-horizontal" method="post" role="form">
