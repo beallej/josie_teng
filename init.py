@@ -47,7 +47,7 @@ def positionner(id):
     mission_id = request.form["mission_id"]
     voeux = request.form["reason"]
     positionner_pour_mission(mission_id, id, voeux)
-    return show_missions(id)
+    return ingenieur_etudes(id)
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def add_mission(ingenieur_id):
 @app.route('/ingenieur_etudes/<ingenieur_id>',methods=['GET','POST'])
 def ingenieur_etudes(ingenieur_id):
     missionsAAffecter = get_missions_a_affecter()
-    ingenieur = get_ingenieur_by_id(id)
+    ingenieur = get_ingenieur_by_id(ingenieur_id)
     return render_template('ingenieur_etudes.html', missionsAAffecter=missionsAAffecter,
                            ingenieur=ingenieur)
 
