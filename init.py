@@ -109,6 +109,12 @@ def showMissions(ingenieur_id):
                            missionsClosed=missionsClosed,
                            ingenieur_id=ingenieur_id)
 
+@app.route('/ingenieur_etudes/<id>/activite')
+def show_evolution_for_ingenieur(id):
+    activites = get_evolution_pour_ingenieur(id)
+    ingenieur = get_ingenieur_by_id(id)
+    return render_template('ingenieur_evolution.html', activites=activites, ingenieur=ingenieur)
+
 @app.errorhandler(404)
 def notFound(e):
     return render_template('404.html')

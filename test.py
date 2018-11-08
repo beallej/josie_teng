@@ -78,9 +78,13 @@ class UnitTests(unittest.TestCase):
             self.assertEqual(mission.ingenieurs_positionnees[0].id, self.josie.id)
 
         def test_ingenieur_evolution_response_obj():
-            evolution = get_evolution_pour_ingenieur(self.josie.id)
-            self.assertTrue(evolution[0].description.startswith("Josie a positionné pour mission apply to jobs avec les souhaits just because à "))
-            self.assertTrue(evolution[1].description.startswith("Josie a été affectué la mission apply to jobs à "))
+            activities = get_evolution_pour_ingenieur(self.josie.id)
+            self.assertEqual(activities[0].mission.title, "apply to jobs")
+            self.assertEqual(activities[0].positionne, True)
+            self.assertIsNotNone(activities[0].date_positionne)
+            self.assertEqual(activities[0].affectue, True)
+            self.assertIsNotNone(activities[0].date_affectue)
+            self.assertEqual(len(activities), 1)
 
         def test_get_missions():
             missions = get_missions()
