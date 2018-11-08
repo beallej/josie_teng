@@ -132,7 +132,7 @@ def add_mission(ingenieur_id):
         title = request.form["title"]
         description = request.form["description"]
         categories = request.form["categories"]
-        if title == "" or description == "" or categories == "":
+        if title == "" or description == "":
             print("No title or No description")
         else:
             # add mission in database
