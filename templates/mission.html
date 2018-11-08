@@ -27,7 +27,9 @@
                 <th class="text-center">Ingenieur</th>
                 <th class="text-center">Voeux</th>
                 <th class="text-center">Date Positionné</th>
-                <th class="text-center">Affecter</th>
+                {% if mission.status == "A_AFFECTER" %}
+                    <th class="text-center">Affecter</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -36,13 +38,16 @@
                     <td>{{ positionnement.ingenieur_etudes_name }}</td>
                     <td>{{ positionnement.voeux }}</td>
                     <td>{{ positionnement.date_positionne }}</td>
-                    <form method="post" action="{{ url_for("affectuer_mission", id=mission.id) }}">
-                        <td>
-                            <button class="btn btn-danger" type="submit">Affecter</button>
-                        </td>
-                        <input type="hidden" name="ingenieur_etudes_id" value="{{ positionnement.ingenieur_etudes_id }}"/>
-                        <input type="hidden" name="ingenieur_affairs_id" value="{{ ingenieur.id }}"/>
-                    </form>
+                    {% if mission.status == "A_AFFECTER" %}
+                        <form method="post" action="{{ url_for("affectuer_mission", id=mission.id) }}">
+                            <td>
+                                <button class="btn btn-danger" type="submit">Affecter</button>
+                            </td>
+                            <input type="hidden" name="ingenieur_etudes_id"
+                                   value="{{ positionnement.ingenieur_etudes_id }}"/>
+                            <input type="hidden" name="ingenieur_affairs_id" value="{{ ingenieur.id }}"/>
+                        </form>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
