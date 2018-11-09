@@ -72,10 +72,10 @@ class UnitTests(unittest.TestCase):
             mission = get_mission_by_id(self.jobsMission.id)
             self.assertEqual(mission.title, "apply to jobs")
             self.assertEqual(mission.description, "because I'm unemployed")
-            self.assertListEqual(mission.categories, ["carriere"])
+            self.assertEqual(mission.categories, "carriere")
             self.assertEqual(mission.status, Status.AFFECTE.value)
-            self.assertEqual(mission.ingenieur_affecte.id, self.josie.id)
-            self.assertEqual(mission.ingenieurs_positionnees[0].id, self.josie.id)
+            self.assertEqual(mission.ingenieur_affecte.ingenieur_etudes_id, self.josie.id)
+            self.assertEqual(mission.ingenieurs_positionnees[0].ingenieur_etudes_id, self.josie.id)
 
         def test_ingenieur_evolution_response_obj():
             activities = get_evolution_pour_ingenieur(self.josie.id)

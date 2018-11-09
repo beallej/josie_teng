@@ -17,7 +17,7 @@ class Status(Enum):
     CLOS = "Clos"
     AFFECTE = "Affectée"
 
-#
+
 
 association_table = db.Table('association',
     db.Column('mission_id', db.Integer, db.ForeignKey('mission.id')),

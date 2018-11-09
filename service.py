@@ -1,4 +1,3 @@
-from database import *
 from dto import *
 
 
@@ -156,7 +155,6 @@ def create_account(username, password, name, type):
 def login(username, password):
     encrypted_password = encrypt_password(password)
     ingenieur = Ingenieur_Etudes.query.filter_by(username=username, password=encrypted_password).first()
-    print("username " + username)
     if ingenieur is None:
         ingenieur = Ingenieur_Affaires.query.filter_by(username=username, password=encrypted_password).first()
     if ingenieur is None:

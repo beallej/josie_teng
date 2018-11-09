@@ -1,6 +1,4 @@
-import flask
-from flask import Flask, request, render_template, flash, session, url_for, redirect
-from service import *
+from flask import Flask, request, render_template, session, url_for, redirect
 
 from service import *
 from utils import *
@@ -26,22 +24,17 @@ def index():
         else:
             ingenieur = login(username, password)
             if ingenieur != None:
-                print("ingenieur.type = " + ingenieur.type)
-                print("type = " + type)
                 if ingenieur.type == "etudes" and type == "Etudes":
-                    print("Etude login success")
                     url = url_for("ingenieur_etudes", ingenieur_id=ingenieur.id)
                     set_cookies(ingenieur)
                     return redirect(url)
 
                 elif ingenieur.type == "affaires" and type == "Affaires":
-                    print("Affaire login success")
                     url = url_for("ingenieur_affaires", ingenieur_id=ingenieur.id)
                     set_cookies(ingenieur)
                     return redirect(url)
                 else:
                     error_message = "Connexion impossible"
-                    print("choisir la correct position svp")
             else:
                 error_message = "Nom d'utilisateur ou mot de passe incorrect"
 
@@ -105,7 +98,7 @@ def register():
         name = request.form["name"]
         type = request.form["type"]
         if username == "" or password == "" or password2 == "" or name == "":
-            print("No username or No password or No confirmpassword or name")
+            error_message = "Toutes les infos sont requises"
         elif password == password2:
             try:
                 if type == "Etudes":
@@ -117,8 +110,10 @@ def register():
                     set_cookies(ingenieur)
                     return redirect(url_for('ingenieur_affaires', ingenieur_id=ingenieur.id))
             except Exception as inst:
-                print(inst.args)
-                error_message = inst.args[0]
+                if len(inst.args) > 0:
+                    error_message = inst.args[0]
+                else :
+                    error_message = "Erreur pas connue"
 
     return render_template('Register.html', error_message=error_message)
 
@@ -126,6 +121,7 @@ def register():
 # add Mission
 @app.route('/ingenieur_affaires/<ingenieur_id>/addmission', methods=['GET', 'POST'])
 def add_mission(ingenieur_id):
+    error_message = None
     ingenieur = get_ingenieur_affaires_by_id(ingenieur_id)
     if request.method == 'POST':
         # get data from html
@@ -133,12 +129,11 @@ def add_mission(ingenieur_id):
         description = request.form["description"]
         categories = request.form["categories"]
         if title == "" or description == "":
-            print("No title or No description")
+            error_message = "Il faut une titre et une description."
         else:
             # add mission in database
             add_mission_to_database(title, description, categories)
-            print("add successfully")
-    return render_template('addmission.html', ingenieur=ingenieur)
+    return render_template('addmission.html', ingenieur=ingenieur, error_message=error_message)
 
 
 # show Missions
@@ -189,13 +184,6 @@ def not_found(e):
 
 if __name__ == "__main__":
     from database import db
-
-    # print("creating database")
-    # db.drop_all()
     db.create_all()
-    # from test import *
-    #
-    # # test_db()
-    # # print("database created")
     app.jinja_env.auto_reload = True
     app.run()
