@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/style/style.css"/>
-    <title>Ingenieur d'Études</title>
+    <title>Ingénieur d'Études</title>
 </head>
 <body>
 <header>
     <div class="myheader text-center py-5">
-        <h1 class="font-weight-normal display-3 mb-3">Ingenieur d'Études</h1><br>
+        <h1 class="font-weight-normal display-3 mb-3">Ingénieur d'Études</h1><br>
     </div>
 </header>
 <div class="container">
@@ -24,7 +24,7 @@
 <section class="bg-light text-center py-5">
     <h2>Missions À Affecter</h2>
     <form method="post" class="categories-form" action="{{ url_for("ingenieur_etudes", ingenieur_id=ingenieur.id) }}" >
-        <label for="categories" class="col-2 control-label">Filter par categories (separées par virgule): </label>
+        <label for="categories" class="col-2 control-label">Filter par catégories (separées par virgule): </label>
         <input name="categories" class="categories" type="text" placeholder="ex. Java, iOS, etc...">
         <button class="btn btn-primary" type="submit">Filtrer</button>
      </form>
@@ -62,7 +62,7 @@
             </tbody>
         </table>
 
-        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id = ingenieur.id) }}" class="btn btn-info mt-4">Evolution
+        <a href="{{ url_for("show_evolution_for_ingenieur", ingenieur_id = ingenieur.id) }}" class="btn btn-info mt-4">Évolution
 
             d'activité</a>
     </div>
