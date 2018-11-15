@@ -1,4 +1,4 @@
-from dto import *
+from webapp.dto import *
 
 
 def get_missions(status=None):

@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, session, url_for, redirect
 
-from service import *
-from utils import *
+from webapp.service import *
+from webapp.utils import *
 
 app = Flask(__name__)
 app.secret_key = 'ytkey'
@@ -183,7 +183,7 @@ def not_found(e):
 
 
 if __name__ == "__main__":
-    from database import db
+    from webapp.database import db
     db.create_all()
     app.jinja_env.auto_reload = True
     app.run()
