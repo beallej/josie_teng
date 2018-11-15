@@ -1,5 +1,5 @@
-from utils import *
-from database import *
+from webapp.utils import *
+from webapp.database import *
 
 class IngenieurType(Enum):
     Affaires = "affaires"

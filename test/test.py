@@ -1,7 +1,7 @@
-from service import *
+from webapp.service import *
 import unittest
-from database import db, Positionnement, Affectuation, Status, Categorie, Action
-from utils import *
+from webapp.database import db, Positionnement, Affectuation, Status, Categorie, Action
+from webapp.utils import *
 import time
 
 
